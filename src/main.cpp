@@ -40,7 +40,7 @@ void draw_ground() {
 	}
 }
 
-//player component
+//people component
 COORD position[4];
 COORD centre;
 
