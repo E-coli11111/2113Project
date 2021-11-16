@@ -4,13 +4,19 @@
 #include <string>
 #include <windows.h>
 #include <time.h>
+#include <pthread.h>
 
 using namespace std;
 
-bool Timer(time_t time, int id) {
-	time_t start[10];
-	time_t end = clock();
-	if (end - start[0] >= time) {
+time_t start[2] = {0, 0};
+
+int getTime() {
+  return clock()/CLOCKS_PER_SEC;
+}
+
+bool Timer(time_t time_period, int id) {
+	time_t end = getTime();
+	if (end - start[id] >= time_period) {
 		start[id] = end;
 		return 1;
 	}
@@ -40,7 +46,7 @@ void draw_ground() {
 	}
 }
 
-//people component
+//player component
 COORD position[4];
 COORD centre;
 
@@ -95,31 +101,35 @@ struct node {
 node * head_node = new node;
 node * tail_node = new node;
 
-void set_head_node(node * head_node) {
+void set_head_node(node * &head_node) {
 	head_node->obstacle = NULL;
 	head_node->next = NULL;
 }
 
-void set_tail_node(node * tail_node) {
+void set_tail_node(node * &tail_node) {
 	tail_node->obstacle = NULL;
 	tail_node->next = NULL;
 }
 
 //add new node to linked list forward
-void create_new_node(obstacle * this_obstacle, node * head_node, node * tail_node) {
+void create_new_node(obstacle * this_obstacle, node * &head_node, node * &tail_node) {
 	node * new_node = new node;
 	new_node->obstacle = this_obstacle;
-	if (head_node->next = NULL) {
-		head_node->next = new_node;
+	new_node->next = NULL;
+	if (head_node->obstacle == NULL) {
+		head_node = new_node;
+		tail_node = new_node;
+	} else {
+		tail_node->next = new_node;
+		tail_node = new_node;
 	}
-	new_node->next = tail_node->next;
-	tail_node = new_node;
 }
 
 //destroy node to realize dynamic memory
-void destroy_node(node * this_node) {
-	head_node->next = this_node->next;
-	delete this_node;
+void destroy_node(node * &head_node) {
+	node * p = head_node;
+	head_node = head_node->next;
+	delete p;
 }
 
 //generate obstacle and initial it
@@ -153,14 +163,16 @@ void draw_obstacle(obstacle * this_obstacle) {
 	for (int i = 0; i < 4; i++) {
 		SetPos(this_obstacle->graphs[i]);
 		cout << '-';
-		SetPos(this_obstacle->graphs[4 + i]);
+	}
+	for (int i = 4; i < 6; i++) {
+		SetPos(this_obstacle->graphs[i]);
 		cout << '|';
 	}
 }
 
 //clear the obstacle on the screen
 void draw_null_obstacle(obstacle * this_obstacle) {
-	for (int i = 0; i < 8; i++) {
+	for (int i = 0; i < 6; i++) {
 		SetPos(this_obstacle->graphs[i]);
 		cout << ' ';
 	}
@@ -168,25 +180,27 @@ void draw_null_obstacle(obstacle * this_obstacle) {
 
 //move all the obstacle and judge whether to destroy it or not
 void obstacle_move() {
-	node * current = head_node->next;
-	while (current->next != NULL) {
+	node * current = head_node;
+	while (current != NULL) {
 		//move one obstacle
 		draw_null_obstacle(current->obstacle);
-		current->obstacle->centre.X -= 1;
+		current->obstacle->centre.X -= 2;
 		reset_obstacle(current->obstacle);
 		draw_obstacle(current->obstacle); 
 		//judgement
-		if (current->obstacle->centre.X <= 2) {
-			destroy_node(current);
-			current = head_node->next;
+		if (current->obstacle->centre.X <= 0) {
+			draw_null_obstacle(current->obstacle);
+			destroy_node(head_node);
+			node * current = head_node;
 			continue;
 		}
 		current = current->next;
-	}	
+	}
+	delete current;	
 }
 
 //control the character to jump and judge destroy of the obstacle
-void jump() {
+void * jump(void * args) {
 	for (int i = 0; i < 5; i++) {
 		draw_null_people();
 		centre.Y -= 1;
@@ -194,16 +208,19 @@ void jump() {
 		Sleep(100);
 	}
 	for (int i = 0; i < 5; i++) {
-		node * current = head_node;
-		while(current->next != NULL) {
+/*		node * current = head_node;
+		while(current != NULL) {
 			//if people steps on the obstacle, destroy it and award score
 			if ((current->obstacle->graphs[0].X == centre.X + 1 || current->obstacle->graphs[0].X == centre.X - 1 || current->obstacle->graphs[1].X == centre.X + 1 || current->obstacle->graphs[1].X == centre.X - 1) && (current->obstacle->graphs[1].Y == centre.Y + 2)) {
 				draw_null_obstacle(current->obstacle);
-				destroy_node(current);
+				destroy_node(head_node);
+				node * current = head_node;
+				continue;
 				//score++;
 			}
-			
+			current = current->next;			
 		}
+		delete current; */
 		draw_null_people();
 		centre.Y += 1;
 		draw_people(centre);
@@ -212,17 +229,29 @@ void jump() {
 }
 
 void game() {
+	obstacle * this_obstacle = new obstacle;
+	initial_obstacle(this_obstacle);
+	draw_obstacle(this_obstacle);
+	create_new_node(this_obstacle, head_node, tail_node);
 	while(true) {
-		char x = _getch();
-		if (x == 'k') jump();
-		if (Timer(5000, 0)) {
+		if (_kbhit()) {
+			char x = _getch();
+			if (x == 'k') {
+				pthread_t tids;
+				int ret = pthread_create(&tids, NULL, jump, NULL);
+			}
+		}
+		if (Timer(5, 0)) {
 			obstacle * this_obstacle = new obstacle;
 			initial_obstacle(this_obstacle);
 			draw_obstacle(this_obstacle);
 			create_new_node(this_obstacle, head_node, tail_node);
 		}
-		obstacle_move();
+		if (Timer(1, 1)) {
+			obstacle_move();
+		}
 	}
+	pthread_exit(NULL);
 }
 
 int main() {
