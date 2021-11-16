@@ -27,7 +27,7 @@ void mainMenu(){ //May need to set the initial mouse to the right position.
                 moveUp();
             }
         }
-        if(key == 13){
+        if(key == 13){ // When press "Enter", go to the selected function.
             if(lineNum == 0)
                 startGame();
             else if(lineNum == 1)

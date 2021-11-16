@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-const int MAXSIZE = 5;
+
+const int MAXSIZE = 5; // Can be changed.
 struct node{
     int score;
     std::string id;
@@ -16,9 +17,8 @@ struct node{
  */
 class RankSortedList{
 public:
-    node *head;
-    node *tail;
     int size = 0;
+    // Insert user's id and score to the List.
     bool insert(int score, std::string id){
         if(size == MAXSIZE && score <= tail->score){ //If the score is smaller than all the scores exist, it will not be added.
             return false;
@@ -56,6 +56,7 @@ public:
         }
         return true;
     }
+    // Print all the ids and scores in the list. Arranged by score.
     void printAll(){
         if(head == nullptr || head == NULL){
             std::cout<< "Empty List" << std::endl;
@@ -69,27 +70,7 @@ public:
             current = current->next;
         }
     }
-    void deleteAll(){
-        if(size == 0){
-            return;
-        }else if(size == 1){
-            delete head;
-        }else{
-            node *current = tail->previous;
-            node *temp;
-            delete tail;
-            tail = NULL;
-            while(current != head){
-                temp = current;
-                current = temp->previous;
-                delete temp;
-                temp = NULL;
-            }
-            delete head;
-            head = NULL;
-        }
-        size = 0;
-    }
+    // Export data to the local path without any encryption. Can be modified easily.
     void exportList(std::string path){
         std::ofstream fout;
         fout.open(path);
@@ -137,5 +118,27 @@ public:
         fin.close();
     }
 private:
-
+    node *head;
+    node *tail;
+    void deleteAll(){
+        if(size == 0){
+            return;
+        }else if(size == 1){
+            delete head;
+        }else{
+            node *current = tail->previous;
+            node *temp;
+            delete tail;
+            tail = NULL;
+            while(current != head){
+                temp = current;
+                current = temp->previous;
+                delete temp;
+                temp = NULL;
+            }
+            delete head;
+            head = NULL;
+        }
+        size = 0;
+    }
 };
