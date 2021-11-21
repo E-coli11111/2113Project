@@ -23,6 +23,11 @@ bool Timer(time_t time_period, int id) {
 	return 0;
 }
 
+struct COORD{
+	int X;
+	int Y;
+}
+
 //set cursor position
 void SetPos(COORD a) {
 	HANDLE out=GetStdHandle(STD_OUTPUT_HANDLE);
@@ -127,9 +132,11 @@ void create_new_node(obstacle * this_obstacle, node * &head_node, node * &tail_n
 
 //destroy node to realize dynamic memory
 void destroy_node(node * &head_node) {
-	node * p = head_node;
-	head_node = head_node->next;
-	delete p;
+	if (head_node->next != NULL) {
+		node * p = head_node;
+		head_node = head_node->next;
+		delete p;
+	}
 }
 
 //generate obstacle and initial it
