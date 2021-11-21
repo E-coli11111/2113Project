@@ -14,6 +14,10 @@ void setColor(int n){
     std::cout << "\033[" << to_string(n) + "m";
 }
 
+// Set the position of the console
+void Setpos(int x, int y){
+    printf("\033[%d;%dH", y, x); 
+}
 // Reset the font color and background color to default.
 void resetColor(){
     std::cout << "\033[49;39m";
