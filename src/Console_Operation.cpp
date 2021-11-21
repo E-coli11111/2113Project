@@ -15,7 +15,7 @@ void setColor(int n){
 }
 
 // Set the position of the console
-void Setpos(int x, int y){
+void SetPos(int x, int y){
     printf("\033[%d;%dH", y, x); 
 }
 // Reset the font color and background color to default.
