@@ -1,7 +1,7 @@
 #include <iostream>
 #include <termio.h>
 #include <stdio.h>
-
+#include "string"
 /*
  * Set the color of words printed in the console.
  * Input n should be with in [30,37]
@@ -15,7 +15,7 @@ void setColor(int n){
 }
 
 // Set the position of the console
-void SetPos(int x, int y){
+void setPos(int x, int y){
     printf("\033[%d;%dH", y, x); 
 }
 // Reset the font color and background color to default.

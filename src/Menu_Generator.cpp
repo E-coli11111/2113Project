@@ -8,10 +8,15 @@
  * More functions can be added.
  */
 void mainMenu(){ //May need to set the initial mouse to the right position.
+    setPos(30,10);
     setColor(33);
     std::cout<<"WELCOME!!"<<endl;
     setColor(35);
-    std::cout<<"START"<<endl<<"HIGHEST SCORES";
+    setPos(39,12);
+    std::cout<<"START";
+    setPos(39,13);
+    std::cout<<"HIGHEST SCORES";
+    setPos(39,12);
     int lineNum = 0; //If lineNum = 0, start the game. If lineNum = 1, show the highest score
     while(1){
         char key = scanKeyboard();

@@ -2,6 +2,7 @@
 #define CONSOLE_OPERATION_H
 
 void setColor(int n);
+void setPos(int x, int y);
 void resetColor();
 void moveUp();
 void moveDOWN();
