@@ -8,37 +8,32 @@
  * More functions can be added.
  */
 void mainMenu(){ //May need to set the initial mouse to the right position.
-    setPos(30,10);
     setColor(33);
-    std::cout<<"WELCOME!!";
+    std::cout<<"WELCOME!!"<<endl;
     setColor(35);
-    setPos(29,12);
-    std::cout<<"START";
-    setPos(29,13);
-    std::cout<<"HIGHEST SCORES";
-    setPos(28,12);
+    std::cout<<"START"<<endl<<"HIGHEST SCORES";
     int lineNum = 0; //If lineNum = 0, start the game. If lineNum = 1, show the highest score
     while(1){
-        int key = scanKeyboard();
+        char key = scanKeyboard();
         if(key == 87){ // When press "W", go up.
             if(lineNum == 1){
                 lineNum --;
-                setPos(28,12);;
+                moveUp();
             }
         }
         if(key == 83){ // When press "S", go down.
             if(lineNum == 0){
                 lineNum ++;
-                setPos(28,13);;
+                moveUp();
             }
         }
         if(key == 13){ // When press "Enter", go to the selected function.
             if(lineNum == 0)
-                game();
+                startGame();
             else if(lineNum == 1)
                 showRank();
             break;
         }
-    }
     clear();
+    }
 }
