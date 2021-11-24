@@ -1,7 +1,10 @@
 #include <iostream>
 #include <termio.h>
 #include <stdio.h>
-
+#include <unistd.h>
+#include <fcntl.h>
+#include "string"
+using namespace std;
 /*
  * Set the color of words printed in the console.
  * Input n should be with in [30,37]
@@ -11,51 +14,70 @@
  * 36: dark green   37: white
  */
 void setColor(int n){
-    std::cout << "\033[" << to_string(n) + "m";
+    cout << "\033[" << to_string(n) + "m";
 }
 
 // Set the position of the console
-void SetPos(int x, int y){
-    printf("\033[%d;%dH", y, x); 
+void setPos(int x, int y){
+    printf("\033[%d;%dH", y, x);
 }
 // Reset the font color and background color to default.
 void resetColor(){
-    std::cout << "\033[49;39m";
+    cout << "\033[49;39m";
 }
 
 // Move the mouse to the line above.
 void moveUp(){
-    std::cout << "\033[1A";
+    cout << "\033[1A";
 }
 
 // Move the mouse to the line below.
 void moveDOWN(){
-    std::cout << "\033[1B";
+    cout << "\033[1B";
 }
 
 // Clear everything in the console.
 void clear(){
-    std::cout << "\033[2J";
+    cout << "\033[2J";
 }
+
+int kbhit(void){
+    struct termios oldt, newt;
+    int ch;
+    int oldf;
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+    ch = getchar();
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    fcntl(STDIN_FILENO, F_SETFL, oldf);
+    if(ch != EOF){
+        ungetc(ch, stdin);
+        return 1;
+    }
+    return 0;
+}
+
 /*
  * Detect if there is a keyboard activity.
  * Return the ASCII code of the key pressed on the keyboard.
  */
 int scanKeyboard(){
+    system("stty -echo");
     int in;
-    struct termios new_settings;
-    struct termios stored_settings;
-    tcgetattr(0,&stored_settings);
-    new_settings = stored_settings;
-    new_settings.c_lflag &= (~ICANON);
-    new_settings.c_cc[VTIME] = 0;
-    tcgetattr(0,&stored_settings);
-    new_settings.c_cc[VMIN] = 1;
-    tcsetattr(0,TCSANOW,&new_settings);
+    cout << "\033[s";
+    while(1){
+        if(kbhit()){
+            in = getchar();
 
-    in = getchar();
+            break;
+        }
 
-    tcsetattr(0,TCSANOW,&stored_settings);
+    }
+    system("stty echo");
+    cout << "\033[u";
     return in;
 }//这个是抄的到时得改
-
