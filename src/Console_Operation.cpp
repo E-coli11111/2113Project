@@ -38,7 +38,11 @@ void moveDOWN(){
 
 // Clear everything in the console.
 void clear(){
-    cout << "\033[2J";
+    for(int line = 0; line < 50 ; line ++){
+        setPos(0,line);
+        cout << "\033[K";
+    }
+
 }
 
 int kbhit(void){
