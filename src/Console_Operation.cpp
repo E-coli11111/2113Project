@@ -32,7 +32,7 @@ void moveUp(){
 }
 
 // Move the mouse to the line below.
-void moveDOWN(){
+void moveDown(){
     cout << "\033[1B";
 }
 

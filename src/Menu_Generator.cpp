@@ -5,10 +5,17 @@
 
 using namespace std;
 
-char PATH[] = "Rank";
+char PATH[] = "Rank";//The path of the of the rank data.
 
 void mainMenu();
-void showrank(){
+
+/*
+ * This method implement the ranking function.
+ * It will first load the rank file from the local data.
+ * And display it on the console.
+ * Press "BACK" to return to the main menu.
+ */
+void rankMenu(){
     clear();
     setPos(33,10);
     setColor(33);
@@ -18,7 +25,7 @@ void showrank(){
     listptr->displayRank(25,12);
     setPos(34,17);
     setColor(31);
-    cout << "Exit";
+    cout << "BACK";
     setPos(33,17);
     while(1) {
         int key = scanKeyboard();
@@ -29,6 +36,39 @@ void showrank(){
     }
     delete listptr;
     mainMenu();
+}
+
+void pauseMenu(){
+    setColor(35);
+    setPos(33,0);
+    cout << "RESUME";
+    setPos(33,1);
+    cout << "SAVE AND QUIT"
+    setPos(32,0);
+    int lineNum = 0;
+    while(1){
+        int key = scanKeyboard();
+        if(key == 119){ // When press "W", go up.
+            if(lineNum != 0){
+                lineNum --;
+                moveUp();
+            }
+        }
+        if(key == 115){ // When press "S", go down.
+            if(lineNum != 1){
+                lineNum ++;
+                moveDown();
+            }
+        }
+        if(key == 10){ // When press "Enter", go to the selected function.
+            if(lineNum == 0)
+                //resume();
+            else if(lineNum == 1)
+                //save();
+                //quit();
+            break;
+        }
+    }
 }
 
 /*
@@ -47,31 +87,33 @@ void mainMenu(){ //May need to set the initial mouse to the right position.
     cout<<"START";
     setPos(29,13);
     cout<<"HIGHEST SCORES";
-    setPos(28,12);
+    setPos(29,14);
+    cout<<"EXIT";
     setPos(28,12);
     int lineNum = 0; //If lineNum = 0, start the game. If lineNum = 1, show the highest score
     while(1){
         int key = scanKeyboard();
         if(key == 119){ // When press "W", go up.
-            if(lineNum == 1){
+            if(lineNum != 0){
                 lineNum --;
-                setPos(28,12);
+                moveUp();
             }
         }
         if(key == 115){ // When press "S", go down.
-            if(lineNum == 0){
+            if(lineNum != 2){
                 lineNum ++;
-                setPos(28,13);
+                moveDown();
             }
         }
         if(key == 10){ // When press "Enter", go to the selected function.
             if(lineNum == 0)
                 exit(1);
             else if(lineNum == 1)
-                showrank();
+                rankMenu();
+            else if(lineNum == 2)
+                exit(0);
             break;
         }
-
     }
     clear();
 }
