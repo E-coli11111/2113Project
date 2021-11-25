@@ -43,7 +43,7 @@ void pauseMenu(){
     setPos(33,0);
     cout << "RESUME";
     setPos(33,1);
-    cout << "SAVE AND QUIT"
+    cout << "SAVE AND QUIT";
     setPos(32,0);
     int lineNum = 0;
     while(1){
@@ -61,11 +61,12 @@ void pauseMenu(){
             }
         }
         if(key == 10){ // When press "Enter", go to the selected function.
-            if(lineNum == 0)
+            if(lineNum == 0) {
                 //resume();
-            else if(lineNum == 1)
+            }else if(lineNum == 1){
                 //save();
                 //quit();
+            }
             break;
         }
     }
@@ -110,8 +111,11 @@ void mainMenu(){ //May need to set the initial mouse to the right position.
                 exit(1);
             else if(lineNum == 1)
                 rankMenu();
-            else if(lineNum == 2)
+            else if(lineNum == 2){
+                clear();
+                setPos(0,0);
                 exit(0);
+            }
             break;
         }
     }
