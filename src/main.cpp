@@ -4,13 +4,12 @@
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <sys/time.h>
 #include <unistd.h>
 #include <termios.h>
 #include <fcntl.h>
-#include "Menu_Generator.h"
-#include "Console_Operation.h"
-//#include <windows.h>
+//#include "Menu_Generator.h"
+//#include "Console_Operation.h"
 
 using namespace std;
 
@@ -32,7 +31,10 @@ struct node {
   node * next;
 };
 
-time_t start[2] = {0, 0};
+// record time
+timeval start[2];
+timeval game_start;
+timeval game_end;
 
 // player component
 COORD position[4];
@@ -42,15 +44,17 @@ COORD centre;
 node * head_node = new node;
 node * tail_node = new node;
 
-// get current time
-int getTime() {
-  return clock()/CLOCKS_PER_SEC;
+// initial Timer by obtaining current time
+void initial_Timer() {
+  gettimeofday(&start[0], NULL);
+  gettimeofday(&start[1], NULL);
 }
 
-//a timing machine
+// a timing machine
 bool Timer(time_t time_period, int id) {
-  time_t end = getTime();
-  if (end - start[id] >= time_period) {
+  timeval end;
+  gettimeofday(&end, NULL);
+  if (1000*(end.tv_sec - start[id].tv_sec) + (end.tv_usec - start[id].tv_usec)/1000 >= time_period) {
 	start[id] = end;
 	return 1;
   }
@@ -124,7 +128,7 @@ void draw_people(COORD centre) {
   position[3].X = centre.X + 1;
   position[3].Y = centre.Y + 1;
   SetPos(position[0]);
-  cout << 'O';
+  cout << 'o';
   SetPos(position[1]);
   cout << '|';
   SetPos(position[2]);
@@ -228,6 +232,24 @@ void draw_null_obstacle(obstacle * this_obstacle) {
   }
 }
 
+// output game over window
+void game_over() {
+  //clear();
+  SetPos(30,10);
+  //setColor(33);
+  cout<< "You lose!!" << endl;
+  gettimeofday(&game_end, NULL);
+  int score = 1000 * (game_end.tv_sec - game_start.tv_sec) + (game_end.tv_usec - game_start.tv_usec) / 1000;
+  //mainMenu();
+}
+
+// judge whether player crashed on the obstacle
+void crash(obstacle * this_obstacle) {
+  if (this_obstacle->centre.X - 2 <= centre.X + 1 && centre.Y + 1 <= this_obstacle->centre.Y - 1) {
+	game_over();
+  }
+} 
+
 // move all the obstacle and judge whether to destroy it or not
 void obstacle_move() {
   node * current = head_node;
@@ -268,22 +290,6 @@ void * jump(void * args) {
   }
 }
 
-// judge whether player crashed on the obstacle
-void crash(obstacle * this_obstacle) {
-  if (this_obstacle->centre.X - 2 <= centre.X + 1 && centre.Y + 1 <= this_obstacle->centre - 1) {
-	game_over();
-  }
-} 
-
-// output game over window
-void game_over() {
-  clear();
-  SetPos(30,10);
-  setColor(33);
-  cout<< "You lose!!" << endl;
-  mainMenu();
-}
-
 // play the game
 void game() {
   obstacle * this_obstacle = new obstacle;
@@ -298,13 +304,13 @@ void game() {
 	  int ret = pthread_create(&tids, NULL, jump, NULL);
 	  }
     }
-    if (Timer(5, 0)) {
+    if (Timer(5000, 0)) {
 	  obstacle * this_obstacle = new obstacle;
 	  initial_obstacle(this_obstacle);
 	  draw_obstacle(this_obstacle);
 	  create_new_node(this_obstacle, head_node, tail_node);
     }
-    if (Timer(1, 1)) {
+    if (Timer(1000, 1)) {
 	  obstacle_move();
     }
   }
@@ -312,13 +318,16 @@ void game() {
 }
 
 int main() {
+  //mainMenu();
   srand((int)time(0));
   //	int new_win = system("gnome-terminal -e ./project");
   initial_people();
   draw_ground();
   set_head_node(head_node);
   set_tail_node(tail_node);
-	
+  initial_Timer();
+  gettimeofday(&game_start, NULL);
   game();
+  
   return 0;
 }
