@@ -36,6 +36,16 @@ void moveDown(){
     cout << "\033[1B";
 }
 
+// Move the mouse to the column left
+void moveLeft(int n){
+    prinf("\033[%dC", n);
+}
+
+// Move the mouse to the column right
+void moveRight(int n){
+    prinf("\033[%dD", n);
+}
+
 // Clear everything in the console.
 void clear(){
     for(int line = 0; line < 50 ; line ++){
