@@ -121,7 +121,3 @@ void mainMenu(){ //May need to set the initial mouse to the right position.
     }
     clear();
 }
-int main(){
-    mainMenu();
-}
-
