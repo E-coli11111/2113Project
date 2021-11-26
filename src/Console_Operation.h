@@ -6,6 +6,8 @@ void setPos(int x, int y);
 void resetColor();
 void moveUp();
 void moveDown();
+void moveleft();
+void moveright();
 int scanKeyboard();
 void clear();
 
