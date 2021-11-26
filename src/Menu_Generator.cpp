@@ -8,6 +8,7 @@ using namespace std;
 char PATH[] = "Rank";//The path of the of the rank data.
 
 void mainMenu();
+void game();
 
 /*
  * This method implement the ranking function.
@@ -108,7 +109,7 @@ void mainMenu(){ //May need to set the initial mouse to the right position.
         }
         if(key == 10){ // When press "Enter", go to the selected function.
             if(lineNum == 0)
-                exit(1);
+                break;
             else if(lineNum == 1)
                 rankMenu();
             else if(lineNum == 2){

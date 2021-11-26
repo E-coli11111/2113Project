@@ -8,8 +8,8 @@
 #include <unistd.h>
 #include <termios.h>
 #include <fcntl.h>
-//#include "Menu_Generator.h"
-//#include "Console_Operation.h"
+#include "Menu_Generator.h"
+#include "Console_Operation.h"
 
 using namespace std;
 
@@ -234,13 +234,13 @@ void draw_null_obstacle(obstacle * this_obstacle) {
 
 // output game over window
 void game_over() {
-  //clear();
+  clear();
   SetPos(30,10);
-  //setColor(33);
+  setColor(33);
   cout<< "You lose!!" << endl;
   gettimeofday(&game_end, NULL);
   int score = 1000 * (game_end.tv_sec - game_start.tv_sec) + (game_end.tv_usec - game_start.tv_usec) / 1000;
-  //mainMenu();
+  mainMenu();
 }
 
 // judge whether player crashed on the obstacle
@@ -318,7 +318,7 @@ void game() {
 }
 
 int main() {
-  //mainMenu();
+  mainMenu();
   srand((int)time(0));
   //	int new_win = system("gnome-terminal -e ./project");
   initial_people();

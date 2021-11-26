@@ -38,12 +38,12 @@ void moveDown(){
 
 // Move the mouse to the column left
 void moveLeft(int n){
-    prinf("\033[%dC", n);
+    printf("\033[%dC", n);
 }
 
 // Move the mouse to the column right
 void moveRight(int n){
-    prinf("\033[%dD", n);
+    printf("\033[%dD", n);
 }
 
 // Clear everything in the console.
@@ -54,7 +54,7 @@ void clear(){
     }
 
 }
-
+//Reference: https://blog.csdn.net/yemao_guyue/article/details/43105253
 int kbhit(void){
     struct termios oldt, newt;
     int ch;
