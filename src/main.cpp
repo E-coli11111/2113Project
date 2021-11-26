@@ -1,10 +1,15 @@
 #include <iostream>
 #include <iomanip>
-#include <conio.h>
-#include <string>
-#include <windows.h>
-#include <time.h>
 #include <pthread.h>
+#include <string>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
+#include <termios.h>
+#include <fcntl.h>
+
+//#include <windows.h>
 
 using namespace std;
 
@@ -15,30 +20,67 @@ int getTime() {
 }
 
 bool Timer(time_t time_period, int id) {
-	time_t end = getTime();
-	if (end - start[id] >= time_period) {
+  time_t end = getTime();
+    if (end - start[id] >= time_period) {
 		start[id] = end;
 		return 1;
 	}
 	return 0;
 }
 
+bool _kbhit() {
+  struct termios oldt, newt;
+  int ch;
+  int oldf;
+  tcgetattr(STDIN_FILENO, &oldt);
+  newt = oldt;
+  newt.c_lflag &= ~(ICANON | ECHO);
+  tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+  oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+  fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+  ch = getchar();
+  tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+  fcntl(STDIN_FILENO, F_SETFL, oldf);
+  if (ch != EOF) {
+    ungetc(ch, stdin);
+    return 1;
+  }
+  return 0;
+}
+
+char _getch () {
+  char ch = getchar();
+  return ch;
+}
+
 struct COORD{
 	int X;
 	int Y;
+};
+
+void SetPos(int x, int y){
+    printf("\033[%d;%dH", y, x);
 }
 
 //set cursor position
 void SetPos(COORD a) {
-	HANDLE out=GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleCursorPosition(out, a);
+	//HANDLE out=GetStdHandle(STD_OUTPUT_HANDLE);
+	//SetConsoleCursorPosition(out, a);
+	SetPos(a.X, a.Y);
 }
 
-void SetPos(int i, int j) {
-	COORD pos={i, j};
-	SetPos(pos);
+void MovePos(COORD a, string direction, int n) {
+  if (direction == "up") {
+    printf("\033[%dA", n);
+  } else if (direction == "down") {
+    printf("\033[%dB", n);
+  } else if (direction == "left") {
+    printf("\033[%dC", n);
+  } else if (direction == "right") {
+    printf("\033[%dD", n);
+  }
 }
-
+  
 //draw the ground
 void draw_ground() {
 	SetPos(0, 23);
@@ -72,7 +114,7 @@ void draw_people(COORD centre) {
 	SetPos(position[2]);
 	cout << '/';
 	SetPos(position[3]);
-	cout << '\\';	
+	cout << '\\';
 }
 
 //clear people on the screen
@@ -98,7 +140,7 @@ struct obstacle {
 
 //linked list to store obstacle
 struct node {
-	obstacle * obstacle;
+	obstacle * this_obstacle;
 	node * next;
 };
 
@@ -107,21 +149,21 @@ node * head_node = new node;
 node * tail_node = new node;
 
 void set_head_node(node * &head_node) {
-	head_node->obstacle = NULL;
+	head_node->this_obstacle = NULL;
 	head_node->next = NULL;
 }
 
 void set_tail_node(node * &tail_node) {
-	tail_node->obstacle = NULL;
+	tail_node->this_obstacle = NULL;
 	tail_node->next = NULL;
 }
 
 //add new node to linked list forward
 void create_new_node(obstacle * this_obstacle, node * &head_node, node * &tail_node) {
 	node * new_node = new node;
-	new_node->obstacle = this_obstacle;
+	new_node->this_obstacle = this_obstacle;
 	new_node->next = NULL;
-	if (head_node->obstacle == NULL) {
+	if (head_node->this_obstacle == NULL) {
 		head_node = new_node;
 		tail_node = new_node;
 	} else {
@@ -150,7 +192,7 @@ void initial_obstacle(obstacle * this_obstacle) {
 	this_obstacle->graphs[0].Y = this_obstacle->graphs[1].Y = this_obstacle->centre.Y - 1;
 	this_obstacle->graphs[2].Y = this_obstacle->graphs[3].Y = this_obstacle->centre.Y + 1;
 	this_obstacle->graphs[4].Y = this_obstacle->graphs[5].Y = this_obstacle->centre.Y;
-	
+
 }
 
 //reset coordinate of obstacle
@@ -162,7 +204,7 @@ void reset_obstacle(obstacle * this_obstacle) {
 	this_obstacle->graphs[0].Y = this_obstacle->graphs[1].Y = this_obstacle->centre.Y - 1;
 	this_obstacle->graphs[2].Y = this_obstacle->graphs[3].Y = this_obstacle->centre.Y + 1;
 	this_obstacle->graphs[4].Y = this_obstacle->graphs[5].Y = this_obstacle->centre.Y;
-	
+
 }
 
 //draw obstacle
@@ -188,51 +230,48 @@ void draw_null_obstacle(obstacle * this_obstacle) {
 //move all the obstacle and judge whether to destroy it or not
 void obstacle_move() {
 	node * current = head_node;
-	while (current != NULL) {
+	while (current != NULL && current->this_obstacle != NULL) {
 		//move one obstacle
-		draw_null_obstacle(current->obstacle);
-		current->obstacle->centre.X -= 2;
-		reset_obstacle(current->obstacle);
-		draw_obstacle(current->obstacle); 
+		draw_null_obstacle(current->this_obstacle);
+		current->this_obstacle->centre.X -= 2;
+		reset_obstacle(current->this_obstacle);
+		draw_obstacle(current->this_obstacle);
 		//judgement
-		if (current->obstacle->centre.X <= 0) {
-			draw_null_obstacle(current->obstacle);
+		if (current->this_obstacle->centre.X <= 1) {
+			draw_null_obstacle(current->this_obstacle);
 			destroy_node(head_node);
-			node * current = head_node;
+			current = head_node;
 			continue;
 		}
 		current = current->next;
 	}
-	delete current;	
+	delete current;
 }
 
-//control the character to jump and judge destroy of the obstacle
+//control the character to jump
 void * jump(void * args) {
 	for (int i = 0; i < 5; i++) {
 		draw_null_people();
 		centre.Y -= 1;
 		draw_people(centre);
-		Sleep(100);
+		sleep(100);
 	}
 	for (int i = 0; i < 5; i++) {
-/*		node * current = head_node;
-		while(current != NULL) {
-			//if people steps on the obstacle, destroy it and award score
-			if ((current->obstacle->graphs[0].X == centre.X + 1 || current->obstacle->graphs[0].X == centre.X - 1 || current->obstacle->graphs[1].X == centre.X + 1 || current->obstacle->graphs[1].X == centre.X - 1) && (current->obstacle->graphs[1].Y == centre.Y + 2)) {
-				draw_null_obstacle(current->obstacle);
-				destroy_node(head_node);
-				node * current = head_node;
-				continue;
-				//score++;
-			}
-			current = current->next;			
-		}
-		delete current; */
 		draw_null_people();
 		centre.Y += 1;
 		draw_people(centre);
-		Sleep(100);
+		sleep(100);
 	}
+}
+
+void crash(obstacle * this_obstacle) {
+	if (this_obstacle->centre.X - 2 <= centre.X + 1 && centre.Y + 1 <= this_obstacle->centre - 1) {
+		game_over();
+	}
+} 
+
+void game_over() {
+	
 }
 
 void game() {
@@ -242,8 +281,8 @@ void game() {
 	create_new_node(this_obstacle, head_node, tail_node);
 	while(true) {
 		if (_kbhit()) {
-			char x = _getch();
-			if (x == 'k') {
+		    char x = getchar();
+		        if (x == 'k') {
 				pthread_t tids;
 				int ret = pthread_create(&tids, NULL, jump, NULL);
 			}
@@ -258,18 +297,17 @@ void game() {
 			obstacle_move();
 		}
 	}
-	pthread_exit(NULL);
+  pthread_exit(NULL);
 }
 
 int main() {
 	srand((int)time(0));
+	//	int new_win = system("gnome-terminal -e ./project");
 	initial_people();
 	draw_ground();
 	set_head_node(head_node);
 	set_tail_node(tail_node);
+	
 	game();
 	return 0;
 }
-//jump判断脚下有无东西--判断光标处是否有输出
-//异步操作进行跳跃和障碍移动
-//设置链表储存障碍并随时更新 
