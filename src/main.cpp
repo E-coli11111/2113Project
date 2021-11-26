@@ -8,26 +8,55 @@
 #include <unistd.h>
 #include <termios.h>
 #include <fcntl.h>
-
+#include Menu_Generator.h
 //#include <windows.h>
 
 using namespace std;
 
+// COORD is to store the coordinate of a point
+struct COORD{
+  int X;
+  int Y;
+};
+
+// obstacle involves centre and different component coordinate
+struct obstacle {
+	COORD centre;
+	COORD graphs[8];
+};
+
+// linked list to store obstacle
+struct node {
+	obstacle * this_obstacle;
+	node * next;
+};
+
 time_t start[2] = {0, 0};
 
+// player component
+COORD position[4];
+COORD centre;
+
+// head_node and tail_node
+node * head_node = new node;
+node * tail_node = new node;
+
+// get current time
 int getTime() {
   return clock()/CLOCKS_PER_SEC;
 }
 
+//a timing machine
 bool Timer(time_t time_period, int id) {
   time_t end = getTime();
-    if (end - start[id] >= time_period) {
-		start[id] = end;
-		return 1;
-	}
-	return 0;
+  if (end - start[id] >= time_period) {
+	start[id] = end;
+	return 1;
+  }
+  return 0;
 }
 
+// read input from keyboard without stop the program
 bool _kbhit() {
   struct termios oldt, newt;
   int ch;
@@ -48,27 +77,17 @@ bool _kbhit() {
   return 0;
 }
 
-char _getch () {
-  char ch = getchar();
-  return ch;
-}
-
-struct COORD{
-	int X;
-	int Y;
-};
-
+// set cursor position based on coordinate
 void SetPos(int x, int y){
     printf("\033[%d;%dH", y, x);
 }
 
-//set cursor position
+// set cursor position based on COORD
 void SetPos(COORD a) {
-	//HANDLE out=GetStdHandle(STD_OUTPUT_HANDLE);
-	//SetConsoleCursorPosition(out, a);
 	SetPos(a.X, a.Y);
 }
 
+// move cursor's position
 void MovePos(COORD a, string direction, int n) {
   if (direction == "up") {
     printf("\033[%dA", n);
@@ -81,7 +100,7 @@ void MovePos(COORD a, string direction, int n) {
   }
 }
   
-//draw the ground
+// draw the ground
 void draw_ground() {
 	SetPos(0, 23);
 	for (int i = 0; i <= 100; i++) {
@@ -93,11 +112,7 @@ void draw_ground() {
 	}
 }
 
-//player component
-COORD position[4];
-COORD centre;
-
-//draw people according to the centre coordinate
+// draw people according to the centre coordinate
 void draw_people(COORD centre) {
 	position[0].X = centre.X;
 	position[0].Y = centre.Y - 1;
@@ -117,7 +132,7 @@ void draw_people(COORD centre) {
 	cout << '\\';
 }
 
-//clear people on the screen
+// clear people on the screen
 void draw_null_people() {
 	for (int i = 0; i < 4; i++) {
 		SetPos(position[i]);
@@ -125,29 +140,14 @@ void draw_null_people() {
 	}
 }
 
-//set start position of people
+// set start position of people
 void initial_people() {
 	centre.X = 1;
 	centre.Y = 21;
 	draw_people(centre);
 }
 
-//obstacle involves centre and different component coordinate
-struct obstacle {
-	COORD centre;
-	COORD graphs[8];
-};
-
-//linked list to store obstacle
-struct node {
-	obstacle * this_obstacle;
-	node * next;
-};
-
-//head_node and tail_node
-node * head_node = new node;
-node * tail_node = new node;
-
+// initialize head_node and tail_node
 void set_head_node(node * &head_node) {
 	head_node->this_obstacle = NULL;
 	head_node->next = NULL;
@@ -158,7 +158,7 @@ void set_tail_node(node * &tail_node) {
 	tail_node->next = NULL;
 }
 
-//add new node to linked list forward
+// add new node to linked list forwardly
 void create_new_node(obstacle * this_obstacle, node * &head_node, node * &tail_node) {
 	node * new_node = new node;
 	new_node->this_obstacle = this_obstacle;
@@ -172,7 +172,7 @@ void create_new_node(obstacle * this_obstacle, node * &head_node, node * &tail_n
 	}
 }
 
-//destroy node to realize dynamic memory
+// destroy node to realize dynamic memory
 void destroy_node(node * &head_node) {
 	if (head_node->next != NULL) {
 		node * p = head_node;
@@ -181,7 +181,7 @@ void destroy_node(node * &head_node) {
 	}
 }
 
-//generate obstacle and initial it
+// generate obstacle and initial it
 void initial_obstacle(obstacle * this_obstacle) {
 	int height = (rand() % (0 - 2)) + 2;
 	this_obstacle->centre = {100, 23 - height};
@@ -195,7 +195,7 @@ void initial_obstacle(obstacle * this_obstacle) {
 
 }
 
-//reset coordinate of obstacle
+// reset coordinate of obstacle
 void reset_obstacle(obstacle * this_obstacle) {
 	this_obstacle->graphs[0].X = this_obstacle->graphs[2].X = this_obstacle->centre.X - 1;
 	this_obstacle->graphs[1].X = this_obstacle->graphs[3].X = this_obstacle->centre.X + 1;
@@ -207,7 +207,7 @@ void reset_obstacle(obstacle * this_obstacle) {
 
 }
 
-//draw obstacle
+// draw obstacle
 void draw_obstacle(obstacle * this_obstacle) {
 	for (int i = 0; i < 4; i++) {
 		SetPos(this_obstacle->graphs[i]);
@@ -219,7 +219,7 @@ void draw_obstacle(obstacle * this_obstacle) {
 	}
 }
 
-//clear the obstacle on the screen
+// clear the obstacle on the screen
 void draw_null_obstacle(obstacle * this_obstacle) {
 	for (int i = 0; i < 6; i++) {
 		SetPos(this_obstacle->graphs[i]);
@@ -227,11 +227,11 @@ void draw_null_obstacle(obstacle * this_obstacle) {
 	}
 }
 
-//move all the obstacle and judge whether to destroy it or not
+// move all the obstacle and judge whether to destroy it or not
 void obstacle_move() {
 	node * current = head_node;
 	while (current != NULL && current->this_obstacle != NULL) {
-		//move one obstacle
+		// move one obstacle
 		draw_null_obstacle(current->this_obstacle);
 		current->this_obstacle->centre.X -= 2;
 		reset_obstacle(current->this_obstacle);
@@ -245,33 +245,42 @@ void obstacle_move() {
 		}
 		current = current->next;
 	}
+	crash(head_node->this_obstacle);
 	delete current;
 }
 
-//control the character to jump
+// control the character to jump
 void * jump(void * args) {
 	for (int i = 0; i < 5; i++) {
 		draw_null_people();
 		centre.Y -= 1;
 		draw_people(centre);
+		crash(head_node->this_obstacle);
 		sleep(100);
 	}
 	for (int i = 0; i < 5; i++) {
 		draw_null_people();
 		centre.Y += 1;
 		draw_people(centre);
+		crash(head_node->this_obstacle);
 		sleep(100);
 	}
 }
 
+// judge whether player crashed on the obstacle
 void crash(obstacle * this_obstacle) {
 	if (this_obstacle->centre.X - 2 <= centre.X + 1 && centre.Y + 1 <= this_obstacle->centre - 1) {
 		game_over();
 	}
 } 
 
+// output game over window
 void game_over() {
-	
+	clear();
+    setPos(30,10);
+    setColor(33);
+    cout<< "You lose!!" << endl;
+    mainMenu();
 }
 
 void game() {
