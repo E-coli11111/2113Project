@@ -85,9 +85,9 @@ void RankSortedList::printAll(){
     }
 }
 // Export data to the local path without any encryption. Can be modified easily.
-void RankSortedList::exportList(char path[]){
+void RankSortedList::exportList(){
     ofstream fout;
-    fout.open(path);
+    fout.open(PATH);
     if(fout.fail()) {
         std::cout << "Errors" << std::endl;
         return;
@@ -101,11 +101,11 @@ void RankSortedList::exportList(char path[]){
     }
 }
 // Import rank from existing file. Original data in the file will be release;
-void RankSortedList::importList(char path[]){
+void RankSortedList::importList(){
     deleteAll();
     std::string data;
     std::ifstream fin;
-    fin.open(path);
+    fin.open(PATH);
     if(fin.fail()){
         std::cout << "Error when loading ranks!" << std::endl;
     }

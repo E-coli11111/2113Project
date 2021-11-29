@@ -16,10 +16,11 @@ public:
     bool insert(int score, std::string id);
     void displayRank(int x, int y);
     void printAll();
-    void exportList(char path[]);
-    void importList(char path[]);
+    void exportList();
+    void importList();
 
 private:
+    const char PATH[] = "../Rank"
     node *head;
     node *tail;
     void deleteAll();

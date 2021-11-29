@@ -10,6 +10,7 @@
 #include <fcntl.h>
 #include "Menu_Generator.h"
 #include "Console_Operation.h"
+#include "RankList.h"
 
 using namespace std;
 
@@ -80,7 +81,7 @@ bool _kbhit() {
     return 1;
   }
   return 0;
-}
+}//这个是不是可以删
 
 // set cursor position based on coordinate
 void SetPos(int x, int y){
@@ -290,6 +291,14 @@ void * jump(void * args) {
   }
 }
 
+// Save the record to the local file;
+void save(string name, int score){
+    RankSortedList rank = RankSortedList();
+    rank.importList();
+    rank.insert(score, name);
+    rank.exportList();
+}
+
 // play the game
 void game() {
   obstacle * this_obstacle = new obstacle;
@@ -303,6 +312,16 @@ void game() {
 	  pthread_t tids;
 	  int ret = pthread_create(&tids, NULL, jump, NULL);
 	  }
+      else if(x == 'p'){
+          //Pause the game, need to be implemented.
+          bool isEnd = pauseMenu();
+          if(isEnd){
+              //save(name,score); //name and score are not yet created.
+              //End the game, need to be implemented.
+          }else {
+              //Resume the game
+          }
+      }
     }
     if (Timer(5000, 0)) {
 	  obstacle * this_obstacle = new obstacle;

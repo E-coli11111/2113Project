@@ -38,8 +38,12 @@ void rankMenu(){
     delete listptr;
     mainMenu();
 }
-
-void pauseMenu(){
+/*
+ * The menu generated when the game is paused.
+ * Return true if the user wants to quit the game.
+ * Return false if the user wants to resume the game.
+ */
+bool pauseMenu(){
     setColor(35);
     setPos(33,0);
     cout << "RESUME";
@@ -63,10 +67,9 @@ void pauseMenu(){
         }
         if(key == 10){ // When press "Enter", go to the selected function.
             if(lineNum == 0) {
-                //resume();
+                return false;
             }else if(lineNum == 1){
-                //save();
-                //quit();
+                return true;
             }
             break;
         }

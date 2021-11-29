@@ -2,7 +2,7 @@
 #define MENU_GENRATOR_H
 
 void mainMenu();
-void pauseMenu();
+bool pauseMenu();
 void mainMenu();
 
 #endif
