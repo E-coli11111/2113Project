@@ -243,7 +243,7 @@ void save(int score, string name){
 }
 
 void next_step(int score) {
-  SetPos(16,25);
+  SetPos(26,14);
   setColor(33);
   cout << "Press Enter to go to the next step" << endl;
   string name;
@@ -252,7 +252,7 @@ void next_step(int score) {
       char x = getchar();
       if (x == 10) {
         clear();
-        SetPos(16,25);
+        SetPos(30,13);
         setColor(33);
         cout << "Please enter your name:";
         cin >> name;
@@ -266,7 +266,7 @@ void next_step(int score) {
 // output game over window
 void game_over() {
   clear();
-  SetPos(15,30);
+  SetPos(30,13);
   setColor(33);
   cout<< "You lose!!" << endl;
   gettimeofday(&game_end, NULL);
