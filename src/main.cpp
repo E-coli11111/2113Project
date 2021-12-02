@@ -387,18 +387,20 @@ int main() {
   
   return 0;
 }
+
+// used to free the whole linked list
+void free_list(node_t **head) {
+    while( *head != NULL ) {
+        node_t* temp = *head;
+        *head = ( *head ) -> next;
+        free(temp);
+    }
+}
+
 // restart the game after the last one is done
 void restart_game() {
   clear();
-  node * current = head_node;
-  node * current_next;
-  while (current != NULL) {
-    current_next = current->next;
-    free(current);
-    current = current_next;
-  }
-  delete current;
-  delete current_next;
+  free_list(&head_node);
   score = 0;
   mainMenu();
   srand((int)time(0));
