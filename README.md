@@ -23,7 +23,9 @@ This is a game where you are acting a kid who is running back home after school.
 ## How to compile  
 Enter the project directory and use the following command in the console to conpile:  
 `make`
-Use `./main` to activate the game
+Use `./main PLAYER_NAME` to activate the game
 Use `make clean` to remove all the compiled file
 
+## How to play  
+USE WASD to control the character. Press P to pause the game.
 
