@@ -11,7 +11,7 @@ const int MAXSIZE = 5; // Can be changed.
 /*
  * Data structure to store users score in order.
  * Based on linked list.
- * Return: True if user node is successfully added. Otherwise, return false.
+ * Return: True if user Node is successfully added. Otherwise, return false.
  */
 
 // Insert user's id and score to the List.
@@ -19,10 +19,10 @@ bool RankSortedList::insert(int score, string id){
     if(size == MAXSIZE && score <= tail->score){ //If the score is smaller than all the scores exist, it will not be added.
         return false;
     }
-    node *toAdd = new node{score,id};
-    node *current = head;
+    Node *toAdd = new Node{score,id};
+    Node *current = head;
     if (size == 0 || score >= head->score){
-        toAdd->next = head; // When the node is added to the first, update the head.
+        toAdd->next = head; // When the Node is added to the first, update the head.
         if(size != 0)
             head->previous = toAdd;
         head = toAdd;
@@ -59,7 +59,7 @@ void RankSortedList::displayRank(int x, int y){
         cout<< "No record" << endl;
         return;
     }
-    node *current = head;
+    Node *current = head;
     int rank = 1;
     while(current != nullptr){
         cout<< "#" << rank++ << "\t" <<current->id << "\t" << current->score << endl;
@@ -76,7 +76,7 @@ void RankSortedList::printAll(){
         std::cout<< "Empty List" << std::endl;
         return;
     }
-    node *current = head;
+    Node *current = head;
     while(current != nullptr){
         std::cout<< current->id << "\t" << current->score << std::endl;
         if(current->next == nullptr)
@@ -92,7 +92,7 @@ void RankSortedList::exportList(){
         std::cout << "Errors" << std::endl;
         return;
     }
-    node *current = head;
+    Node *current = head;
     while(current != NULL){
         fout<< current->id << "\t" << current->score << endl;
         if(current->next == nullptr)
@@ -115,15 +115,15 @@ void RankSortedList::importList(){
         pos = data.find("\t");
         id = data.substr(0, pos);
         score =std::stoi(data.substr(pos + 1, data.length() - pos - 1));
-        node *ele = new node{score,id};
+        Node *ele = new Node{score,id};
         head = ele;
     }
-    node *current = head;
+    Node *current = head;
     while(std::getline(fin, data)){
         pos = data.find("\t");
         id = data.substr(0, pos);
         score =std::stoi(data.substr(pos + 1, data.length() - pos - 1));
-        node *ele = new node{score,id};
+        Node *ele = new Node{score,id};
         current->next = ele;
         ele->previous = current;
         current = ele;
@@ -138,8 +138,8 @@ void RankSortedList::deleteAll(){
     }else if(size == 1){
         delete head;
     }else{
-        node *current = tail->previous;
-        node *temp;
+        Node *current = tail->previous;
+        Node *temp;
         delete tail;
         tail = NULL;
         while(current != head){

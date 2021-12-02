@@ -3,11 +3,11 @@
 //
 #ifndef SRC_RANKLIST_H
 #define SRC_RANKLIST_H
-struct node{
+struct Node{
     int score;
     std::string id;
-    node *next;
-    node *previous;
+    Node *next;
+    Node *previous;
 };
 
 class RankSortedList{
@@ -20,9 +20,9 @@ public:
     void importList();
 
 private:
-    const char PATH[] = "../Rank"
-    node *head;
-    node *tail;
+    char PATH[8] = "../Rank";
+    Node *head;
+    Node *tail;
     void deleteAll();
 };
 

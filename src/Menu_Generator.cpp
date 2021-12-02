@@ -5,8 +5,6 @@
 
 using namespace std;
 
-char PATH[] = "Rank";//The path of the of the rank data.
-
 void mainMenu();
 void game();
 
@@ -22,7 +20,7 @@ void rankMenu(){
     setColor(33);
     cout<<"Top 5!!"<<endl;
     RankSortedList *listptr = new RankSortedList;
-    listptr->importList(PATH);
+    listptr->importList();
     listptr->displayRank(25,12);
     setPos(34,17);
     setColor(31);
