@@ -11,5 +11,6 @@ void moveright();
 int scanKeyboard();
 void clear();
 void hideCursor();
+void showCursor();
 
 #endif
