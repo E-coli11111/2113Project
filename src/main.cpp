@@ -189,7 +189,7 @@ void destroy_node(node * &head_node) {
 
 // generate obstacle and initial it
 void initial_obstacle(obstacle * this_obstacle) {
-  int height = (rand() % (0 - 20)) + 20;
+  int height = (rand() % (0 - 10)) + 10;
   this_obstacle->centre = {100, 23 - height};
   this_obstacle->graphs[0].X = this_obstacle->graphs[2].X = this_obstacle->centre.X - 1;
   this_obstacle->graphs[1].X = this_obstacle->graphs[3].X = this_obstacle->centre.X + 1;
@@ -319,7 +319,7 @@ void game() {
   while(true) {
 	if (_kbhit()) {
 	  char x = getchar();
-	  if (x == 'w' && centre.Y >= 2) {
+	  if (x == 'w' && centre.Y >= 5) {
 	  	up(); 
 	  } else if (x == 's' && centre.Y <= 21) {
 	  	down();
