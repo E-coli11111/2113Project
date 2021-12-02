@@ -344,7 +344,8 @@ void Pause(){
     score += 1000 * (game_end.tv_sec - game_start.tv_sec) + (game_end.tv_usec - game_start.tv_usec) / 1000;
     bool quit = pauseMenu();
     if (quit) {
-        save(score, "庞博文");
+	clear();
+        next_step(score);
         exit(0);
     } else {
         gettimeofday(&game_start, NULL);
