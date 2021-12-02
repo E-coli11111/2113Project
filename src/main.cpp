@@ -331,7 +331,7 @@ void game() {
 	  draw_obstacle(this_obstacle);
 	  create_new_node(this_obstacle, head_node, tail_node);
     }
-    if (Timer(1000, 1)) {
+    if (Timer(500, 1)) {
 	  obstacle_move();
     }
   }
