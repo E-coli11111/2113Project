@@ -326,7 +326,7 @@ void game() {
 	  	down();
 	  } else if (x == 'a' && centre.X >= 2) {
 	  	left();
-	  } else if (x == 'd' && centre.X <= 98) {
+	  } else if (x == 'd' && centre.X <= 74) {
 	  	right();
 	  }
     }
