@@ -44,7 +44,9 @@ COORD centre;
 // head_node and tail_node
 node * head_node;
 node * tail_node;
+
 void restart_game();
+
 // initial Timer by obtaining current time
 void initial_Timer() {
   for (int i = 0; i < 3; i++) {
