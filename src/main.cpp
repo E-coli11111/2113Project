@@ -240,8 +240,8 @@ void next_step() {
   clear();
   SetPos(30,13);
   setColor(33);
-  cout << "Please enter your name:";
-  cin.ignore(1000, '\n');
+  cout << "Please enter your name(must end with space):";
+  cin.ignore(1000, ' ');
   cin >> name;
   save(score, name);
 }
