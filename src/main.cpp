@@ -181,7 +181,7 @@ void create_new_node(obstacle * this_obstacle, node * &head_node, node * &tail_n
 // generate obstacle and initial it
 void initial_obstacle(obstacle * this_obstacle) {
   int height = (rand() % (0 - 10)) + 10;
-  this_obstacle->centre = {100, 23 - height};
+  this_obstacle->centre = {75, 23 - height};
   this_obstacle->graphs[0].X = this_obstacle->graphs[2].X = this_obstacle->centre.X - 1;
   this_obstacle->graphs[1].X = this_obstacle->graphs[3].X = this_obstacle->centre.X + 1;
   this_obstacle->graphs[4].X = this_obstacle->centre.X - 2;
@@ -237,7 +237,7 @@ void destroy_node(node * &head_node) {
 // output game over window
 void game_over() {
   clear();
-  SetPos(30,10);
+  SetPos(33,10);
   setColor(33);
   cout<< "You lose!!" << endl;
   gettimeofday(&game_end, NULL);
