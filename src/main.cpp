@@ -51,7 +51,7 @@ void restart_game();
 // initial Timer by obtaining current time
 void initial_Timer() {
   for (int i = 0; i < 3; i++) {
-  	gettimeofday(&start[i], NULL);
+    gettimeofday(&start[i], NULL);
   }
 }
 
@@ -60,8 +60,8 @@ bool Timer(time_t time_period, int id) {
   timeval end;
   gettimeofday(&end, NULL);
   if (1000*(end.tv_sec - start[id].tv_sec) + (end.tv_usec - start[id].tv_usec)/1000 >= time_period) {
-	start[id] = end;
-	return 1;
+    start[id] = end;
+    return 1;
   }
   return 0;
 }
@@ -93,11 +93,11 @@ void MovePos(COORD a, string direction, int n) {
 void draw_ground() {
   SetPos(0, 23);
   for (int i = 0; i <= 76; i++) {
-	cout << '-';
+    cout << '-';
   }
   SetPos(0, 24);
   for (int i = 0; i <= 76; i++) {
-	cout << '-';
+    cout << '-';
   }
 }
 
@@ -124,8 +124,8 @@ void draw_people(COORD centre) {
 // clear people on the screen
 void draw_null_people() {
   for (int i = 0; i < 4; i++) {
-	SetPos(position[i]);
-	cout << ' ';
+    SetPos(position[i]);
+    cout << ' ';
   }
 }
 
@@ -138,13 +138,13 @@ void initial_people() {
 
 // initialize head_node and tail_node
 void set_head_node(node * &head_node) {
-	head_node = new node;
+  head_node = new node;
   head_node->this_obstacle = NULL;
   head_node->next = NULL;
 }
 
 void set_tail_node(node * &tail_node) {
-	tail_node = new node;
+  tail_node = new node;
   tail_node->this_obstacle = NULL;
   tail_node->next = NULL;
 }
@@ -155,11 +155,11 @@ void create_new_node(obstacle * this_obstacle, node * &head_node, node * &tail_n
   new_node->this_obstacle = this_obstacle;
   new_node->next = NULL;
   if (head_node->this_obstacle == NULL) {
-	head_node = new_node;
-	tail_node = new_node;
+    head_node = new_node;
+    tail_node = new_node;
   } else {
-	tail_node->next = new_node;
-	tail_node = new_node;
+    tail_node->next = new_node;
+    tail_node = new_node;
   }
 }
 
@@ -191,29 +191,29 @@ void reset_obstacle(obstacle * this_obstacle) {
 // draw obstacle
 void draw_obstacle(obstacle * this_obstacle) {
   for (int i = 0; i < 4; i++) {
-	SetPos(this_obstacle->graphs[i]);
-	cout << '-';
+    SetPos(this_obstacle->graphs[i]);
+    cout << '-';
   }
   for (int i = 4; i < 6; i++) {
-	SetPos(this_obstacle->graphs[i]);
-	cout << '|';
+    SetPos(this_obstacle->graphs[i]);
+    cout << '|';
   }
 }
 
 // clear the obstacle on the screen
 void draw_null_obstacle(obstacle * this_obstacle) {
   for (int i = 0; i < 6; i++) {
-	SetPos(this_obstacle->graphs[i]);
-	cout << ' ';
+    SetPos(this_obstacle->graphs[i]);
+    cout << ' ';
   }
 }
 
 // destroy node to realize dynamic memory
 void destroy_node(node * &head_node) {
   if (head_node->next != NULL) {
-	node * p = head_node;
-	head_node = head_node->next;
-	delete p;
+    node * p = head_node;
+    head_node = head_node->next;
+    delete p;
   }
 }
 
@@ -270,19 +270,19 @@ void crash() {
 void obstacle_move() {
   node * current = head_node;
   while (current != NULL && current->this_obstacle != NULL) {
-	// move one obstacle
-	draw_null_obstacle(current->this_obstacle);
-	current->this_obstacle->centre.X -= 2;
-	reset_obstacle(current->this_obstacle);
-	draw_obstacle(current->this_obstacle);
-	//judgement
-	if (current->this_obstacle->centre.X <= 3) {
-	  draw_null_obstacle(current->this_obstacle);
-	  destroy_node(head_node);
-	  current = head_node;
-	  continue;
-	}
-	current = current->next;
+    // move one obstacle
+    draw_null_obstacle(current->this_obstacle);
+    current->this_obstacle->centre.X -= 2;
+    reset_obstacle(current->this_obstacle);
+    draw_obstacle(current->this_obstacle);
+    //judgement
+    if (current->this_obstacle->centre.X <= 3) {
+    draw_null_obstacle(current->this_obstacle);
+    destroy_node(head_node);
+    current = head_node;
+    continue;
+  }
+    current = current->next;
   }
   crash();
 }
@@ -326,7 +326,7 @@ void Pause(){
   score += 1000 * (game_end.tv_sec - game_start.tv_sec) + (game_end.tv_usec - game_start.tv_usec) / 1000;
   bool quit = pauseMenu();
   if (quit) {
-	clear();
+    clear();
     next_step();
     restart_game();
   } else {
@@ -342,38 +342,38 @@ void game() {
   create_new_node(this_obstacle, head_node, tail_node);
   int n = 0;
   while(true) {
-	if (kbhit()) {
-	  char x = getchar();
-	  if (x == 'w' && centre.Y >= 5) {
-	  	up(); 
-	  } else if (x == 's' && centre.Y <= 20) {
-	  	down();
-	  } else if (x == 'a' && centre.X >= 2) {
-	  	left();
-	  } else if (x == 'd' && centre.X <= 74) {
-	  	right();
-	  } else if (x == 'p'){
+    if (kbhit()) {
+      char x = getchar();
+      if (x == 'w' && centre.Y >= 5) {
+        up(); 
+      } else if (x == 's' && centre.Y <= 20) {
+        down();
+      } else if (x == 'a' && centre.X >= 2) {
+        left();
+      } else if (x == 'd' && centre.X <= 74) {
+        right();
+      } else if (x == 'p'){
         Pause();
-	  }
+      }
     }
     if (Timer(3000, 0)) {
-	  obstacle * this_obstacle = new obstacle;
-	  initial_obstacle(this_obstacle);
-	  draw_obstacle(this_obstacle);
-	  create_new_node(this_obstacle, head_node, tail_node);
+      obstacle * this_obstacle = new obstacle;
+      initial_obstacle(this_obstacle);
+      draw_obstacle(this_obstacle);
+      create_new_node(this_obstacle, head_node, tail_node);
     }
     if (Timer(300 / power(2, n), 1)) {
-	  obstacle_move();
+      obstacle_move();
     }
     if (Timer(20000, 2)) {
       n++;
-	}
+    }
   }
 }
 
 int main() {
   mainMenu();
-	clear();
+  clear();
   SetPos(30,13);
   setColor(33);
   cout << "Please enter your name(must end with space):";
@@ -392,13 +392,13 @@ int main() {
 
 // used to free the whole linked list
 void free_list(node * &head_node) {
-    int i = 0;
-	while (head_node != NULL) {
-	    cout << i++ << endl;
-        node * temp = head_node;
-        head_node = head_node->next;
-        free(temp);
-    }
+  int i = 0;
+  while (head_node != NULL) {
+    cout << i++ << endl;
+    node * temp = head_node;
+    head_node = head_node->next;
+    free(temp);
+  }
 }
 
 // restart the game after the last one is done
@@ -407,7 +407,7 @@ void restart_game() {
   free_list(head_node);
   score = 0;
   mainMenu();
-	clear();
+  clear();
   SetPos(30,13);
   setColor(33);
   cout << "Please enter your name(must end with space):";
