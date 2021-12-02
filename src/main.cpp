@@ -364,7 +364,7 @@ void game() {
 	  char x = getchar();
 	  if (x == 'w' && centre.Y >= 5) {
 	  	up(); 
-	  } else if (x == 's' && centre.Y <= 21) {
+	  } else if (x == 's' && centre.Y <= 20) {
 	  	down();
 	  } else if (x == 'a' && centre.X >= 2) {
 	  	left();
@@ -380,7 +380,7 @@ void game() {
 	  draw_obstacle(this_obstacle);
 	  create_new_node(this_obstacle, head_node, tail_node);
     	}
-    	if (Timer(300 - 10 * n, 1)) {
+    	if (Timer(300 - 50 * n, 1)) {
 	  obstacle_move();
     }
     if (Timer(20000, 2)) {
