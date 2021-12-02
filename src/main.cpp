@@ -190,7 +190,6 @@ void initial_obstacle(obstacle * this_obstacle) {
   this_obstacle->graphs[0].Y = this_obstacle->graphs[1].Y = this_obstacle->centre.Y - 1;
   this_obstacle->graphs[2].Y = this_obstacle->graphs[3].Y = this_obstacle->centre.Y + 1;
   this_obstacle->graphs[4].Y = this_obstacle->graphs[5].Y = this_obstacle->centre.Y;
-
 }
 
 // reset coordinate of obstacle
