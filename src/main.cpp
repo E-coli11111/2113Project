@@ -109,11 +109,11 @@ void MovePos(COORD a, string direction, int n) {
 // draw the ground
 void draw_ground() {
   SetPos(0, 23);
-  for (int i = 0; i <= 100; i++) {
+  for (int i = 0; i <= 76; i++) {
 	cout << '-';
   }
   SetPos(0, 24);
-  for (int i = 0; i <= 100; i++) {
+  for (int i = 0; i <= 76; i++) {
 	cout << '-';
   }
 }
@@ -250,10 +250,11 @@ void game_over() {
 void crash() {
   node * current = head_node;
   while (current != NULL && current->this_obstacle != NULL) {
-    if (current->this_obstacle->centre.X - 2 <= centre.X + 1 && centre.Y + 1 <= current->this_obstacle->centre.Y - 1) {
+    if (current->this_obstacle->centre.X - 2 > centre.X + 1 || current->this_obstacle->centre.X + 2 < centre.X - 1 || centre.Y + 1 < current->this_obstacle->centre.Y - 1 || centre.Y - 1 > current->this_obstacle->centre.Y + 1) {
+      current = current->next;
+    } else {
       game_over();
     }
-    current = current->next;
   }
 } 
 
