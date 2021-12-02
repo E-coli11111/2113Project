@@ -389,15 +389,24 @@ int main() {
 }
 // restart the game after the last one is done
 void restart_game() {
-    clear();
-    node * current = head_node;
-    node * current_next = head_node->next;
-    while (current_next != NULL) {
-        delete current;
-        current_next = current_next->next;
-        node * current = current_next;
-    }
+  clear();
+  node * current = head_node;
+  node * current_next = head_node->next;
+  while (current_next != NULL) {
     delete current;
-    score = 0;
-    main();
+    current_next = current_next->next;
+    node * current = current_next;
+  }
+  delete current;
+  score = 0;
+  mainMenu();
+  srand((int)time(0));
+  initial_people();
+  draw_ground();
+  set_head_node(head_node);
+  set_tail_node(tail_node);
+  initial_Timer();
+  gettimeofday(&game_start, NULL);
+  game();
+  
 }
