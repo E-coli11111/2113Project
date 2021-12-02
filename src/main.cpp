@@ -235,6 +235,13 @@ void destroy_node(node * &head_node) {
   }
 }
 
+void save(int score, string name){
+    RankSortedList list = RankSortedList();
+    list.importList();
+    list.insert(score, name);
+    list.exportList();
+}
+
 // output game over window
 void game_over() {
   clear();
@@ -313,14 +320,8 @@ void right() {
   draw_people(centre);
   crash();
 }
-void save(int score, string name){
-    RankSortedList list = RankSortedList();
-    list.importList();
-    list.insert(score, name);
-    list.exportList();
-}
 
-void pause(){
+void Pause(){
     //codes to stop the game
     bool quit = pauseMenu();
     if (quit) {
@@ -329,6 +330,7 @@ void pause(){
       
     }
 }
+
 // play the game
 void game() {
   obstacle * this_obstacle = new obstacle;
@@ -347,7 +349,7 @@ void game() {
 	  } else if (x == 'd' && centre.X <= 74) {
 	  	right();
 	  } else if (x == 'p'){
-                pause();
+                Pause();
 	  }
        }
     }
