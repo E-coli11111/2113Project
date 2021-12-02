@@ -18,12 +18,13 @@ public:
     void printAll();
     void exportList();
     void importList();
+    void deleteAll();
 
 private:
     char PATH[8] = "../Rank";
     Node *head;
     Node *tail;
-    void deleteAll();
+
 };
 
 

@@ -43,11 +43,11 @@ void rankMenu(){
  */
 bool pauseMenu(){
     setColor(35);
-    setPos(33,0);
-    cout << "RESUME";
     setPos(33,1);
+    cout << "RESUME";
+    setPos(33,2);
     cout << "SAVE AND QUIT";
-    setPos(32,0);
+    setPos(32,1);
     int lineNum = 0;
     while(1){
         int key = scanKeyboard();
@@ -65,9 +65,17 @@ bool pauseMenu(){
         }
         if(key == 10){ // When press "Enter", go to the selected function.
             if(lineNum == 0) {
+                setPos(1,1);
+                cout << "\033[K";
+                setPos(1,2);
+                cout << "\033[K";
                 return false;
             }else if(lineNum == 1){
                 return true;
+                setPos(1,1);
+                cout << "\033[K";
+                setPos(1,2);
+                cout << "\033[K";
             }
             break;
         }

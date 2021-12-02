@@ -239,6 +239,7 @@ void save(int score, string name){
     list.importList();
     list.insert(score, name);
     list.exportList();
+    list.deleteAll();
 }
 
 void next_step(int score) {
