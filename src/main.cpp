@@ -36,7 +36,7 @@ struct node {
 timeval start[3];
 timeval game_start;
 timeval game_end;
-
+int score = 0;
 // player component
 COORD position[4];
 COORD centre;
@@ -248,7 +248,7 @@ void game_over() {
   setColor(33);
   cout<< "You lose!!" << endl;
   gettimeofday(&game_end, NULL);
-  int score = 1000 * (game_end.tv_sec - game_start.tv_sec) + (game_end.tv_usec - game_start.tv_usec) / 1000;
+  score += 1000 * (game_end.tv_sec - game_start.tv_sec) + (game_end.tv_usec - game_start.tv_usec) / 1000;
   save(score, "庞博文");
   exit(0);
   //mainMenu();
@@ -322,11 +322,14 @@ void right() {
 
 void Pause(){
     //codes to stop the game
+    gettimeofday(&game_end, NULL);
+    score += 1000 * (game_end.tv_sec - game_start.tv_sec) + (game_end.tv_usec - game_start.tv_usec) / 1000;
     bool quit = pauseMenu();
     if (quit) {
+        save(score, "庞博文");
         exit(0);
     } else {
-      
+        gettimeofday(&game_start, NULL);
     }
 }
 
