@@ -273,9 +273,9 @@ void obstacle_move() {
 	  current = head_node;
 	  continue;
 	}
-	crash();
 	current = current->next;
   }
+  crash();
   delete current;
 }
 
