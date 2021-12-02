@@ -212,6 +212,7 @@ void destroy_node(node * &head_node) {
   }
 }
 
+// save the score to the rank list
 void save(int score, string name){
   RankSortedList list = RankSortedList();
   list.importList();
@@ -220,6 +221,7 @@ void save(int score, string name){
   list.deleteAll();
 }
 
+// control the end of the game
 void next_step(int score) {
   SetPos(26,14);
   setColor(33);
@@ -372,6 +374,7 @@ void game() {
   }
 }
 
+// restart the game after the last one is done
 void restart_game() {
   clear();
   node * current = head_node;
