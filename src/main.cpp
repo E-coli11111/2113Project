@@ -374,7 +374,7 @@ void game() {
                 Pause();
 	  }
     }
-  }
+
     if (Timer(10000, 0)) {
 	  obstacle * this_obstacle = new obstacle;
 	  initial_obstacle(this_obstacle);
