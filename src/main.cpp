@@ -42,8 +42,8 @@ COORD position[4];
 COORD centre;
 
 // head_node and tail_node
-node * head_node = new node;
-node * tail_node = new node;
+node * head_node;
+node * tail_node;
 void restart_game();
 // initial Timer by obtaining current time
 void initial_Timer() {
@@ -135,11 +135,13 @@ void initial_people() {
 
 // initialize head_node and tail_node
 void set_head_node(node * &head_node) {
+	head_node = new node;
   head_node->this_obstacle = NULL;
   head_node->next = NULL;
 }
 
 void set_tail_node(node * &tail_node) {
+	tail_node = new node;
   tail_node->this_obstacle = NULL;
   tail_node->next = NULL;
 }
