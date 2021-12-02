@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <pthread.h>
+#include <math.h>
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
@@ -355,13 +356,13 @@ void game() {
         Pause();
 	  }
     }
-    if (Timer(5000, 0)) {
+    if (Timer(3000, 0)) {
 	  obstacle * this_obstacle = new obstacle;
 	  initial_obstacle(this_obstacle);
 	  draw_obstacle(this_obstacle);
 	  create_new_node(this_obstacle, head_node, tail_node);
     }
-    if (Timer(300 - 30 * n, 1)) {
+    if (Timer(300 / power(2, n), 1)) {
 	  obstacle_move();
     }
     if (Timer(20000, 2)) {
