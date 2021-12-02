@@ -242,6 +242,7 @@ void game_over() {
   cout<< "You lose!!" << endl;
   gettimeofday(&game_end, NULL);
   int score = 1000 * (game_end.tv_sec - game_start.tv_sec) + (game_end.tv_usec - game_start.tv_usec) / 1000;
+  save("庞博文", score);
   exit(0);
   //mainMenu();
 }
