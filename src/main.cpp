@@ -373,15 +373,14 @@ void game() {
 	  } else if (x == 'p'){
                 Pause();
 	  }
-    }
-
-    if (Timer(10000, 0)) {
+    	}
+    	if (Timer(5000, 0)) {
 	  obstacle * this_obstacle = new obstacle;
 	  initial_obstacle(this_obstacle);
 	  draw_obstacle(this_obstacle);
 	  create_new_node(this_obstacle, head_node, tail_node);
-    }
-    if (Timer(300 - 10 * n, 1)) {
+    	}
+    	if (Timer(300 - 10 * n, 1)) {
 	  obstacle_move();
     }
     if (Timer(20000, 2)) {
