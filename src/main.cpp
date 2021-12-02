@@ -310,7 +310,21 @@ void right() {
   draw_people(centre);
   crash();
 }
+void save(int score, string name){
+    RankSortedList list = RankSortedList();
+    list.importList();
+    list.insert(score, name);
+    list.exportList();
+}
 
+void pause(){
+    //codes to stop the game
+    bool quit = pauseMenu();
+    if (quit){
+        // End the game
+    }else
+
+}
 // play the game
 void game() {
   obstacle * this_obstacle = new obstacle;
@@ -328,7 +342,9 @@ void game() {
 	  	left();
 	  } else if (x == 'd' && centre.X <= 98) {
 	  	right();
-	  }
+	  } else if (x == 'p'){
+          pause();
+      }
     }
     if (Timer(5000, 0)) {
 	  obstacle * this_obstacle = new obstacle;
