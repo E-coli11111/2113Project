@@ -389,10 +389,12 @@ int main() {
 }
 
 // used to free the whole linked list
-void free_list(node **head) {
-    while( *head != NULL ) {
-        node * temp = *head;
-        *head = ( *head ) -> next;
+void free_list(node * &head_node) {
+    int i = 0;
+	while (head != NULL) {
+	    cout << i++ << endl;
+        node * temp = head_node;
+        head = head->next;
         free(temp);
     }
 }
