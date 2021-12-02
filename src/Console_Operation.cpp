@@ -52,7 +52,9 @@ void clear(){
         setPos(0,line);
         cout << "\033[K";
     }
-
+}
+void showcursor() {
+    cout << "\\033[?25h";
 }
 //Reference: https://blog.csdn.net/yemao_guyue/article/details/43105253
 int kbhit(void){
