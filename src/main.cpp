@@ -241,7 +241,7 @@ void next_step() {
   SetPos(30,13);
   setColor(33);
   cout << "Please enter your name:";
-  cin.ignore(1000, '\n')
+  cin.ignore(1000, '\n');
   cin >> name;
   save(score, name);
 }
