@@ -224,25 +224,26 @@ void save(int score, string name){
 }
 
 // control the end of the game
-void next_step(int score) {
+void next_step() {
   SetPos(26,14);
   setColor(33);
-  cout << "Press Enter to go to the next step" << endl;
-  string name;
+  cout << "Press Space to go to the next step" << endl;
+  string name = "player";
   while (true) {
     if (kbhit()) {
       char x = getchar();
-      if (x == 10) {
-        clear();
-        SetPos(30,13);
-        setColor(33);
-        cout << "Please enter your name:";
-        cin >> name;
-        save(score, name);
+      if (x == 32) {
         break;
       }
     }
   }
+  clear();
+  SetPos(30,13);
+  setColor(33);
+  cout << "Please enter your name:";
+  cin.ignore(1000, '\n')
+  cin >> name;
+  save(score, name);
 }
 
 // output game over window
@@ -253,7 +254,7 @@ void game_over() {
   cout<< "You lose!!" << endl;
   gettimeofday(&game_end, NULL);
   score += 1000 * (game_end.tv_sec - game_start.tv_sec) + (game_end.tv_usec - game_start.tv_usec) / 1000;
-  next_step(score);
+  next_step();
   restart_game();
 }
 
@@ -330,7 +331,7 @@ void Pause(){
   bool quit = pauseMenu();
   if (quit) {
 	clear();
-    next_step(score);
+    next_step();
     restart_game();
   } else {
     gettimeofday(&game_start, NULL);
@@ -405,7 +406,6 @@ void restart_game() {
   free_list(head_node);
   score = 0;
   mainMenu();
-  srand((int)time(0));
   initial_people();
   draw_ground();
   set_head_node(head_node);
