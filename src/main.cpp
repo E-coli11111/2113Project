@@ -241,15 +241,33 @@ void save(int score, string name){
     list.exportList();
 }
 
+void next_step(int score) {
+  SetPos(34,25);
+  setColor(33);
+  cout << "Press any key to the next step" << endl;
+  string name;
+  while (true) {
+    if (_kbhit()) {
+      clear();
+      SetPos(34,25);
+      setColor(33);
+      cout << "Please enter your name:";
+      cin >> name;
+      save(score, name);
+      break;
+    }
+  }
+}
+
 // output game over window
 void game_over() {
   clear();
-  SetPos(33,10);
+  SetPos(33,30);
   setColor(33);
   cout<< "You lose!!" << endl;
   gettimeofday(&game_end, NULL);
   score += 1000 * (game_end.tv_sec - game_start.tv_sec) + (game_end.tv_usec - game_start.tv_usec) / 1000;
-  save(score, "庞博文");
+  next_step(score);
   exit(0);
   //mainMenu();
 }
