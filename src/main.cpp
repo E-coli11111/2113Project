@@ -283,6 +283,7 @@ void crash() {
     if (current->this_obstacle->centre.X - 2 > centre.X + 1 || current->this_obstacle->centre.X + 2 < centre.X - 1 || centre.Y + 1 < current->this_obstacle->centre.Y - 1 || centre.Y - 1 > current->this_obstacle->centre.Y + 1) {
       current = current->next;
     } else {
+      delete current;
       game_over();
     }
   }
