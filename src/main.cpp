@@ -235,11 +235,11 @@ void destroy_node(node * &head_node) {
 }
 
 void save(int score, string name){
-    RankSortedList list = RankSortedList();
-    list.importList();
-    list.insert(score, name);
-    list.exportList();
-    list.deleteAll();
+  RankSortedList list = RankSortedList();
+  list.importList();
+  list.insert(score, name);
+  list.exportList();
+  list.deleteAll();
 }
 
 void next_step(int score) {
@@ -344,17 +344,17 @@ void right() {
 
 // stop the game
 void Pause(){
-    //codes to stop the game
-    gettimeofday(&game_end, NULL);
-    score += 1000 * (game_end.tv_sec - game_start.tv_sec) + (game_end.tv_usec - game_start.tv_usec) / 1000;
-    bool quit = pauseMenu();
-    if (quit) {
+  //codes to stop the game
+  gettimeofday(&game_end, NULL);
+  score += 1000 * (game_end.tv_sec - game_start.tv_sec) + (game_end.tv_usec - game_start.tv_usec) / 1000;
+  bool quit = pauseMenu();
+  if (quit) {
 	clear();
-        next_step(score);
-        exit(0);
-    } else {
-        gettimeofday(&game_start, NULL);
-    }
+    next_step(score);
+    exit(0);
+  } else {
+    gettimeofday(&game_start, NULL);
+  }
 }
 
 // play the game
@@ -376,20 +376,20 @@ void game() {
 	  } else if (x == 'd' && centre.X <= 74) {
 	  	right();
 	  } else if (x == 'p'){
-                Pause();
+        Pause();
 	  }
-    	}
-    	if (Timer(5000, 0)) {
+    }
+    if (Timer(5000, 0)) {
 	  obstacle * this_obstacle = new obstacle;
 	  initial_obstacle(this_obstacle);
 	  draw_obstacle(this_obstacle);
 	  create_new_node(this_obstacle, head_node, tail_node);
-    	}
-    	if (Timer(300 - 50 * n, 1)) {
+    }
+    if (Timer(300 - 50 * n, 1)) {
 	  obstacle_move();
     }
     if (Timer(20000, 2)) {
-    	n++;
+      n++;
 	}
   }
 }
