@@ -63,27 +63,6 @@ bool Timer(time_t time_period, int id) {
   return 0;
 }
 
-// read input from keyboard without stop the program
-bool _kbhit() {
-  struct termios oldt, newt;
-  int ch;
-  int oldf;
-  tcgetattr(STDIN_FILENO, &oldt);
-  newt = oldt;
-  newt.c_lflag &= ~(ICANON | ECHO);
-  tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-  oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
-  fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
-  ch = getchar();
-  tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-  fcntl(STDIN_FILENO, F_SETFL, oldf);
-  if (ch != EOF) {
-    ungetc(ch, stdin);
-    return 1;
-  }
-  return 0;
-}
-
 // set cursor position based on coordinate
 void SetPos(int x, int y){
   printf("\033[%d;%dH", y, x);
@@ -247,7 +226,7 @@ void next_step(int score) {
   cout << "Press Enter to go to the next step" << endl;
   string name;
   while (true) {
-    if (_kbhit()) {
+    if (kbhit()) {
       char x = getchar();
       if (x == 10) {
         clear();
@@ -364,7 +343,7 @@ void game() {
   create_new_node(this_obstacle, head_node, tail_node);
   int n = 0;
   while(true) {
-	if (_kbhit()) {
+	if (kbhit()) {
 	  char x = getchar();
 	  if (x == 'w' && centre.Y >= 5) {
 	  	up(); 
