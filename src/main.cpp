@@ -262,7 +262,6 @@ void crash() {
     if (current->this_obstacle->centre.X - 2 > centre.X + 1 || current->this_obstacle->centre.X + 2 < centre.X - 1 || centre.Y + 1 < current->this_obstacle->centre.Y - 1 || centre.Y - 1 > current->this_obstacle->centre.Y + 1) {
       current = current->next;
     } else {
-      delete current;
       game_over();
     }
   }
@@ -287,7 +286,6 @@ void obstacle_move() {
 	current = current->next;
   }
   crash();
-  delete current;
 }
 
 // control the character to up side
