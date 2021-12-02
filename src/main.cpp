@@ -389,9 +389,9 @@ int main() {
 }
 
 // used to free the whole linked list
-void free_list(node_t **head) {
+void free_list(node **head) {
     while( *head != NULL ) {
-        node_t* temp = *head;
+        node * temp = *head;
         *head = ( *head ) -> next;
         free(temp);
     }
