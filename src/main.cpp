@@ -243,14 +243,14 @@ void save(int score, string name){
 }
 
 void next_step(int score) {
-  SetPos(34,25);
+  SetPos(16,25);
   setColor(33);
   cout << "Press any key to the next step" << endl;
   string name;
   while (true) {
     if (_kbhit()) {
       clear();
-      SetPos(34,25);
+      SetPos(16,25);
       setColor(33);
       cout << "Please enter your name:";
       cin >> name;
@@ -263,7 +263,7 @@ void next_step(int score) {
 // output game over window
 void game_over() {
   clear();
-  SetPos(33,30);
+  SetPos(15,30);
   setColor(33);
   cout<< "You lose!!" << endl;
   gettimeofday(&game_end, NULL);
@@ -339,6 +339,7 @@ void right() {
   crash();
 }
 
+// stop the game
 void Pause(){
     //codes to stop the game
     gettimeofday(&game_end, NULL);
@@ -365,7 +366,7 @@ void game() {
 	  char x = getchar();
 	  if (x == 'w' && centre.Y >= 5) {
 	  	up(); 
-	  } else if (x == 's' && centre.Y <= 21) {
+	  } else if (x == 's' && centre.Y <= 20) {
 	  	down();
 	  } else if (x == 'a' && centre.X >= 2) {
 	  	left();
@@ -381,7 +382,7 @@ void game() {
 	  draw_obstacle(this_obstacle);
 	  create_new_node(this_obstacle, head_node, tail_node);
     	}
-    	if (Timer(300 - 10 * n, 1)) {
+    	if (Timer(300 - 50 * n, 1)) {
 	  obstacle_move();
     }
     if (Timer(20000, 2)) {
@@ -393,7 +394,6 @@ void game() {
 int main() {
   mainMenu();
   srand((int)time(0));
-  //int new_win = system("gnome-terminal -e ./project");
   initial_people();
   draw_ground();
   set_head_node(head_node);
