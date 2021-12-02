@@ -294,7 +294,7 @@ void obstacle_move() {
 	reset_obstacle(current->this_obstacle);
 	draw_obstacle(current->this_obstacle);
 	//judgement
-	if (current->this_obstacle->centre.X <= 1) {
+	if (current->this_obstacle->centre.X <= 3) {
 	  draw_null_obstacle(current->this_obstacle);
 	  destroy_node(head_node);
 	  current = head_node;
