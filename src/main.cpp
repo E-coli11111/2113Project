@@ -321,10 +321,11 @@ void save(int score, string name){
 void pause(){
     //codes to stop the game
     bool quit = pauseMenu();
-    if (quit){
-        // End the game
-    }else
-
+    if (quit) {
+        exit(0);
+    } else {
+      
+    }
 }
 // play the game
 void game() {
@@ -344,8 +345,9 @@ void game() {
 	  } else if (x == 'd' && centre.X <= 74) {
 	  	right();
 	  } else if (x == 'p'){
-          pause();
-      }
+                pause();
+	  }
+       }
     }
     if (Timer(10000, 0)) {
 	  obstacle * this_obstacle = new obstacle;
