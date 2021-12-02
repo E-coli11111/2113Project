@@ -44,7 +44,7 @@ COORD centre;
 // head_node and tail_node
 node * head_node = new node;
 node * tail_node = new node;
-
+void restart_game();
 // initial Timer by obtaining current time
 void initial_Timer() {
   for (int i = 0; i < 3; i++) {
@@ -374,21 +374,6 @@ void game() {
   }
 }
 
-// restart the game after the last one is done
-void restart_game() {
-  clear();
-  node * current = head_node;
-  node * current_next = head_node->next;
-  while (current_next != NULL) {
-    delete current;
-    current_next = current_next->next;
-    node * current = current_next;
-  }
-  delete current;
-  score = 0;
-  main();
-}
-
 int main() {
   mainMenu();
   srand((int)time(0));
@@ -401,4 +386,18 @@ int main() {
   game();
   
   return 0;
+}
+// restart the game after the last one is done
+void restart_game() {
+    clear();
+    node * current = head_node;
+    node * current_next = head_node->next;
+    while (current_next != NULL) {
+        delete current;
+        current_next = current_next->next;
+        node * current = current_next;
+    }
+    delete current;
+    score = 0;
+    main();
 }

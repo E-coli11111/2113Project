@@ -10,6 +10,7 @@ void moveleft();
 void moveright();
 int scanKeyboard();
 void clear();
+bool kbhit();
 void hideCursor();
 void showCursor();
 
