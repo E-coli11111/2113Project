@@ -228,7 +228,6 @@ void next_step() {
   SetPos(26,14);
   setColor(33);
   cout << "Press Space to go to the next step" << endl;
-  string name = "player";
   while (true) {
     if (kbhit()) {
       char x = getchar();
@@ -237,12 +236,6 @@ void next_step() {
       }
     }
   }
-  clear();
-  SetPos(30,13);
-  setColor(33);
-  cout << "Please enter your name(must end with space):";
-  cin.ignore(1000, ' ');
-  cin >> name;
   save(score, name);
 }
 
@@ -377,6 +370,11 @@ void game() {
 
 int main() {
   mainMenu();
+	clear();
+  SetPos(30,13);
+  setColor(33);
+  cout << "Please enter your name(must end with space):";
+  cin >> name;
   srand((int)time(0));
   initial_people();
   draw_ground();
@@ -406,6 +404,11 @@ void restart_game() {
   free_list(head_node);
   score = 0;
   mainMenu();
+	clear();
+  SetPos(30,13);
+  setColor(33);
+  cout << "Please enter your name(must end with space):";
+  cin >> name;
   initial_people();
   draw_ground();
   set_head_node(head_node);
