@@ -10,7 +10,6 @@
 #include <fcntl.h>
 #include "Menu_Generator.h"
 #include "Console_Operation.h"
-#include "RankList.h"
 
 using namespace std;
 
@@ -33,7 +32,7 @@ struct node {
 };
 
 // record time
-timeval start[2];
+timeval start[3];
 timeval game_start;
 timeval game_end;
 
@@ -47,8 +46,9 @@ node * tail_node = new node;
 
 // initial Timer by obtaining current time
 void initial_Timer() {
-  gettimeofday(&start[0], NULL);
-  gettimeofday(&start[1], NULL);
+  for (int i = 0; i < 3; i++) {
+  	gettimeofday(&start[i], NULL);
+  }
 }
 
 // a timing machine
@@ -81,7 +81,7 @@ bool _kbhit() {
     return 1;
   }
   return 0;
-}//这个是不是可以删
+}
 
 // set cursor position based on coordinate
 void SetPos(int x, int y){
@@ -105,7 +105,7 @@ void MovePos(COORD a, string direction, int n) {
     printf("\033[%dD", n);
   }
 }
-  
+
 // draw the ground
 void draw_ground() {
   SetPos(0, 23);
@@ -189,7 +189,7 @@ void destroy_node(node * &head_node) {
 
 // generate obstacle and initial it
 void initial_obstacle(obstacle * this_obstacle) {
-  int height = (rand() % (0 - 2)) + 2;
+  int height = (rand() % (0 - 20)) + 20;
   this_obstacle->centre = {100, 23 - height};
   this_obstacle->graphs[0].X = this_obstacle->graphs[2].X = this_obstacle->centre.X - 1;
   this_obstacle->graphs[1].X = this_obstacle->graphs[3].X = this_obstacle->centre.X + 1;
@@ -241,7 +241,8 @@ void game_over() {
   cout<< "You lose!!" << endl;
   gettimeofday(&game_end, NULL);
   int score = 1000 * (game_end.tv_sec - game_start.tv_sec) + (game_end.tv_usec - game_start.tv_usec) / 1000;
-  mainMenu();
+  exit(0);
+  //mainMenu();
 }
 
 // judge whether player crashed on the obstacle
@@ -267,36 +268,42 @@ void obstacle_move() {
 	  current = head_node;
 	  continue;
 	}
+	crash(current->this_obstacle);
 	current = current->next;
   }
-  crash(head_node->this_obstacle);
   delete current;
 }
 
-// control the character to jump
-void * jump(void * args) {
-  for (int i = 0; i < 5; i++) {
-	draw_null_people();
-	centre.Y -= 1;
-	draw_people(centre);
-	crash(head_node->this_obstacle);
-	sleep(100);
-  }
-  for (int i = 0; i < 5; i++) {
-	draw_null_people();
-	centre.Y += 1;
-	draw_people(centre);
-	crash(head_node->this_obstacle);
-	sleep(100);
-  }
+// control the character to up side
+void up() {
+  draw_null_people();
+  centre.Y -= 1;
+  draw_people(centre);
+  crash(head_node->this_obstacle);
 }
 
-// Save the record to the local file;
-void save(string name, int score){
-    RankSortedList rank = RankSortedList();
-    rank.importList();
-    rank.insert(score, name);
-    rank.exportList();
+// control the character to down side
+void down() {
+  draw_null_people();
+  centre.Y -= 1;
+  draw_people(centre);
+  crash(head_node->this_obstacle);
+}
+
+// control the character to left side
+void left() {
+  draw_null_people();
+  centre.X -= 1;
+  draw_people(centre);
+  crash(head_node->this_obstacle);
+}
+
+// control the character to right side
+void right() {
+  draw_null_people();
+  centre.X += 1;
+  draw_people(centre);
+  crash(head_node->this_obstacle);
 }
 
 // play the game
@@ -308,20 +315,15 @@ void game() {
   while(true) {
 	if (_kbhit()) {
 	  char x = getchar();
-	  if (x == 'k') {
-	  pthread_t tids;
-	  int ret = pthread_create(&tids, NULL, jump, NULL);
+	  if (x == 'w' && centre.Y >= 2) {
+	  	up(); 
+	  } else if (x == 's' && centre.Y <= 21) {
+	  	down();
+	  } else if (x == 'a' && centre.X >= 2) {
+	  	left();
+	  } else if (x == 'd' && centre.X <= 98) {
+	  	right();
 	  }
-      else if(x == 'p'){
-          //Pause the game, need to be implemented.
-          bool isEnd = pauseMenu();
-          if(isEnd){
-              //save(name,score); //name and score are not yet created.
-              //End the game, need to be implemented.
-          }else {
-              //Resume the game
-          }
-      }
     }
     if (Timer(5000, 0)) {
 	  obstacle * this_obstacle = new obstacle;
@@ -329,17 +331,16 @@ void game() {
 	  draw_obstacle(this_obstacle);
 	  create_new_node(this_obstacle, head_node, tail_node);
     }
-    if (Timer(1000, 1)) {
+    if (Timer(500, 1)) {
 	  obstacle_move();
     }
   }
-  pthread_exit(NULL);
 }
 
 int main() {
   mainMenu();
   srand((int)time(0));
-  //	int new_win = system("gnome-terminal -e ./project");
+  //int new_win = system("gnome-terminal -e ./project");
   initial_people();
   draw_ground();
   set_head_node(head_node);
