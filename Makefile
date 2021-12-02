@@ -1,3 +1,5 @@
+vpath %.cpp src
+vpath %.h src  
 FLAGS = -pedantic-errors -std=c++11
 main: main.o Menu_Generator.o Console_Operation.o RankList.o
 	g++ $(FLAGS) $^ -o $@
