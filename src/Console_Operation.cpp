@@ -56,6 +56,17 @@ void clear(){
 void showcursor() {
     cout << "\\033[?25h";
 }
+
+// hide the position of the cursor
+void hideCursor() {
+    cout << "\033[?25l";
+}
+
+// show position of the cursor
+void showCursor() {
+    cout << "\33[?25h";
+}
+
 //Reference: https://blog.csdn.net/yemao_guyue/article/details/43105253
 int kbhit(void){
     struct termios oldt, newt;
