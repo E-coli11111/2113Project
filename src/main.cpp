@@ -246,9 +246,13 @@ void game_over() {
 }
 
 // judge whether player crashed on the obstacle
-void crash(obstacle * this_obstacle) {
-  if (this_obstacle->centre.X - 2 <= centre.X + 1 && centre.Y + 1 <= this_obstacle->centre.Y - 1) {
-	game_over();
+void crash() {
+  node * current = head_node;
+  while (current != NULL && current->this_obstacle != NULL) {
+    if (this_obstacle->centre.X - 2 <= centre.X + 1 && centre.Y + 1 <= this_obstacle->centre.Y - 1) {
+      game_over();
+    }
+    current = current->next;
   }
 } 
 
@@ -268,7 +272,7 @@ void obstacle_move() {
 	  current = head_node;
 	  continue;
 	}
-	crash(current->this_obstacle);
+	crash();
 	current = current->next;
   }
   delete current;
@@ -279,15 +283,15 @@ void up() {
   draw_null_people();
   centre.Y -= 1;
   draw_people(centre);
-  crash(head_node->this_obstacle);
+  crash();
 }
 
 // control the character to down side
 void down() {
   draw_null_people();
-  centre.Y -= 1;
+  centre.Y += 1;
   draw_people(centre);
-  crash(head_node->this_obstacle);
+  crash();
 }
 
 // control the character to left side
