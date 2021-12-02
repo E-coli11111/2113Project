@@ -242,14 +242,14 @@ void save(int score, string name){
 }
 
 void next_step(int score) {
-  SetPos(34,25);
+  SetPos(16,25);
   setColor(33);
   cout << "Press any key to the next step" << endl;
   string name;
   while (true) {
     if (_kbhit()) {
       clear();
-      SetPos(34,25);
+      SetPos(16,25);
       setColor(33);
       cout << "Please enter your name:";
       cin >> name;
@@ -262,7 +262,7 @@ void next_step(int score) {
 // output game over window
 void game_over() {
   clear();
-  SetPos(33,30);
+  SetPos(15,30);
   setColor(33);
   cout<< "You lose!!" << endl;
   gettimeofday(&game_end, NULL);
@@ -338,6 +338,7 @@ void right() {
   crash();
 }
 
+// stop the game
 void Pause(){
     //codes to stop the game
     gettimeofday(&game_end, NULL);
@@ -392,7 +393,6 @@ void game() {
 int main() {
   mainMenu();
   srand((int)time(0));
-  //int new_win = system("gnome-terminal -e ./project");
   initial_people();
   draw_ground();
   set_head_node(head_node);
