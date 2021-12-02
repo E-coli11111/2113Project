@@ -10,5 +10,6 @@ void moveleft();
 void moveright();
 int scanKeyboard();
 void clear();
+void hideCursor();
 
 #endif
