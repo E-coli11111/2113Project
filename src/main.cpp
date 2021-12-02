@@ -397,7 +397,8 @@ void restart_game() {
     free(current);
     current = current_next;
   }
-  delete current, current_next;
+  delete current;
+  delete current_next;
   score = 0;
   mainMenu();
   srand((int)time(0));
