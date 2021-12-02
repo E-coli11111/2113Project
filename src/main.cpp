@@ -10,6 +10,7 @@
 #include <fcntl.h>
 #include "Menu_Generator.h"
 #include "Console_Operation.h"
+#include "RankList.h"
 
 using namespace std;
 
