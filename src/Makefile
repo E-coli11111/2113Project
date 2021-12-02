@@ -1,6 +1,6 @@
 FLAGS = -pedantic-errors -std=c++11
 main: main.o Menu_Generator.o Console_Operation.o RankList.o
-	g++ $(FLAGS) $^ -lpthread -o $@
+	g++ $(FLAGS) $^ -o $@
 	
 main.o: main.cpp Menu_Generator.h Console_Operation.h RankList.h
 	g++ $(FLAGS) -lpthread -c $<
