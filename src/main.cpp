@@ -391,13 +391,13 @@ int main() {
 void restart_game() {
   clear();
   node * current = head_node;
-  node * current_next = head_node->next;
-  while (current_next != NULL) {
-    delete current;
-    current_next = current_next->next;
-    node * current = current_next;
+  node * current_next;
+  while (current != NULL) {
+    current_next = current->next;
+    free(current);
+    current = current_next;
   }
-  delete current;
+  delete current, current_next;
   score = 0;
   mainMenu();
   srand((int)time(0));
