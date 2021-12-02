@@ -32,7 +32,7 @@ struct node {
 };
 
 // record time
-timeval start[2];
+timeval start[3];
 timeval game_start;
 timeval game_end;
 
@@ -46,8 +46,9 @@ node * tail_node = new node;
 
 // initial Timer by obtaining current time
 void initial_Timer() {
-  gettimeofday(&start[0], NULL);
-  gettimeofday(&start[1], NULL);
+  for (int i = 0; i < 3; i++) {
+  	gettimeofday(&start[i], NULL);
+  }
 }
 
 // a timing machine
@@ -240,6 +241,7 @@ void game_over() {
   cout<< "You lose!!" << endl;
   gettimeofday(&game_end, NULL);
   int score = 1000 * (game_end.tv_sec - game_start.tv_sec) + (game_end.tv_usec - game_start.tv_usec) / 1000;
+  exit(0);
   //mainMenu();
 }
 
@@ -272,7 +274,7 @@ void obstacle_move() {
   delete current;
 }
 
-// control the character to jump
+// control the character to up side
 void up() {
   draw_null_people();
   centre.Y -= 1;
@@ -280,6 +282,7 @@ void up() {
   crash(head_node->this_obstacle);
 }
 
+// control the character to down side
 void down() {
   draw_null_people();
   centre.Y -= 1;
@@ -287,6 +290,7 @@ void down() {
   crash(head_node->this_obstacle);
 }
 
+// control the character to left side
 void left() {
   draw_null_people();
   centre.X -= 1;
@@ -294,6 +298,7 @@ void left() {
   crash(head_node->this_obstacle);
 }
 
+// control the character to right side
 void right() {
   draw_null_people();
   centre.X += 1;
