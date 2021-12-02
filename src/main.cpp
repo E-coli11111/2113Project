@@ -245,17 +245,20 @@ void save(int score, string name){
 void next_step(int score) {
   SetPos(16,25);
   setColor(33);
-  cout << "Press any key to the next step" << endl;
+  cout << "Press Enter to go to the next step" << endl;
   string name;
   while (true) {
     if (_kbhit()) {
-      clear();
-      SetPos(16,25);
-      setColor(33);
-      cout << "Please enter your name:";
-      cin >> name;
-      save(score, name);
-      break;
+      char x = getchar();
+      if (x == 10) {
+        clear();
+        SetPos(16,25);
+        setColor(33);
+        cout << "Please enter your name:";
+        cin >> name;
+        save(score, name);
+        break;
+      }
     }
   }
 }
