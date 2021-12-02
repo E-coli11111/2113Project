@@ -37,7 +37,9 @@ struct node {
 timeval start[3];
 timeval game_start;
 timeval game_end;
+
 int score = 0;
+
 // player component
 COORD position[4];
 COORD centre;
