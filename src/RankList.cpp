@@ -24,7 +24,6 @@ bool RankSortedList::insert(int score, string id){
     toAdd->previous = NULL;
     Node *current = head;
     if (size == 0 || score >= head->score){
-        cout << "First" <<endl;
         toAdd->next = head; // When the Node is added to the first, update the head.
         if(size != 0)
             head->previous = toAdd;
@@ -32,9 +31,7 @@ bool RankSortedList::insert(int score, string id){
         if (size == 0)
             tail = toAdd;
     }else{
-        cout << "Second" <<endl;
         while(1) {
-            cout << "x";
             if (current->next == NULL){
                 toAdd->previous = current;
                 current->next = toAdd;
