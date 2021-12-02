@@ -21,7 +21,7 @@ public:
     void deleteAll();
 
 private:
-    char PATH[8] = "../Rank";
+    char PATH[8] = "./Rank";
     Node *head;
     Node *tail;
 
