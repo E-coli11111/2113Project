@@ -394,7 +394,7 @@ void free_list(node * &head_node) {
 	while (head != NULL) {
 	    cout << i++ << endl;
         node * temp = head_node;
-        head = head->next;
+        head_node = head_node->next;
         free(temp);
     }
 }
@@ -402,7 +402,7 @@ void free_list(node * &head_node) {
 // restart the game after the last one is done
 void restart_game() {
   clear();
-  free_list(&head_node);
+  free_list(head_node);
   score = 0;
   mainMenu();
   srand((int)time(0));
