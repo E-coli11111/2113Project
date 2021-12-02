@@ -391,7 +391,7 @@ int main() {
 // used to free the whole linked list
 void free_list(node * &head_node) {
     int i = 0;
-	while (head != NULL) {
+	while (head_node != NULL) {
 	    cout << i++ << endl;
         node * temp = head_node;
         head_node = head_node->next;
