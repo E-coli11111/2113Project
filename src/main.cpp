@@ -250,7 +250,7 @@ void game_over() {
 void crash() {
   node * current = head_node;
   while (current != NULL && current->this_obstacle != NULL) {
-    if (this_obstacle->centre.X - 2 <= centre.X + 1 && centre.Y + 1 <= this_obstacle->centre.Y - 1) {
+    if (current->this_obstacle->centre.X - 2 <= centre.X + 1 && centre.Y + 1 <= current->this_obstacle->centre.Y - 1) {
       game_over();
     }
     current = current->next;
