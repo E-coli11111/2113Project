@@ -39,7 +39,7 @@ timeval game_start;
 timeval game_end;
 
 int score = 0;
-
+string name;
 // player component
 COORD position[4];
 COORD centre;
@@ -220,7 +220,7 @@ void destroy_node(node * &head_node) {
 }
 
 // save the score to the rank list
-void save(int score, string name){
+void save(int score){
   RankSortedList list = RankSortedList();
   list.importList();
   list.insert(score, name);
@@ -241,7 +241,7 @@ void next_step() {
       }
     }
   }
-  save(score, name);
+  save(score);
 }
 
 // output game over window
@@ -358,7 +358,7 @@ void game() {
         Pause();
       }
     }
-    if (Timer(3000, 0)) {
+    if (Timer(1500, 0)) {
       obstacle * this_obstacle = new obstacle;
       initial_obstacle(this_obstacle);
       draw_obstacle(this_obstacle);
@@ -375,11 +375,6 @@ void game() {
 
 int main() {
   mainMenu();
-  clear();
-  SetPos(30,13);
-  setColor(33);
-  cout << "Please enter your name(must end with space):";
-  cin >> name;
   srand((int)time(0));
   initial_people();
   draw_ground();
@@ -409,11 +404,6 @@ void restart_game() {
   free_list(head_node);
   score = 0;
   mainMenu();
-  clear();
-  SetPos(30,13);
-  setColor(33);
-  cout << "Please enter your name(must end with space):";
-  cin >> name;
   initial_people();
   draw_ground();
   set_head_node(head_node);
