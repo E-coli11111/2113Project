@@ -228,7 +228,6 @@ void draw_null_obstacle(obstacle * this_obstacle) {
 void destroy_node(node * &head_node) {
   if (head_node->next != NULL) {
 	node * p = head_node;
-	draw_null_obstacle(head_node->this_obstacle);
 	head_node = head_node->next;
 	delete p;
   }
@@ -272,8 +271,7 @@ void game_over() {
   gettimeofday(&game_end, NULL);
   score += 1000 * (game_end.tv_sec - game_start.tv_sec) + (game_end.tv_usec - game_start.tv_usec) / 1000;
   next_step(score);
-  exit(0);
-  //mainMenu();
+  restart_game();
 }
 
 // judge whether player crashed on the obstacle
@@ -352,7 +350,7 @@ void Pause(){
   if (quit) {
 	clear();
     next_step(score);
-    exit(0);
+    restart_game();
   } else {
     gettimeofday(&game_start, NULL);
   }
@@ -393,6 +391,20 @@ void game() {
       n++;
 	}
   }
+}
+
+void restart_game() {
+  clear();
+  node * current = head_node;
+  node * current_next = head_node->next;
+  while (current_next != NULL) {
+    delete current;
+    current_next = current_next->next;
+    node * current = current_next;
+  }
+  delete current;
+  score = 0;
+  main();
 }
 
 int main() {
