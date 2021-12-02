@@ -178,15 +178,6 @@ void create_new_node(obstacle * this_obstacle, node * &head_node, node * &tail_n
   }
 }
 
-// destroy node to realize dynamic memory
-void destroy_node(node * &head_node) {
-  if (head_node->next != NULL) {
-	node * p = head_node;
-	head_node = head_node->next;
-	delete p;
-  }
-}
-
 // generate obstacle and initial it
 void initial_obstacle(obstacle * this_obstacle) {
   int height = (rand() % (0 - 10)) + 10;
@@ -230,6 +221,16 @@ void draw_null_obstacle(obstacle * this_obstacle) {
   for (int i = 0; i < 6; i++) {
 	SetPos(this_obstacle->graphs[i]);
 	cout << ' ';
+  }
+}
+
+// destroy node to realize dynamic memory
+void destroy_node(node * &head_node) {
+  if (head_node->next != NULL) {
+	node * p = head_node;
+	draw_null_obstacle(head_node->this_obstacle);
+	head_node = head_node->next;
+	delete p;
   }
 }
 
