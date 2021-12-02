@@ -339,6 +339,7 @@ void game() {
   initial_obstacle(this_obstacle);
   draw_obstacle(this_obstacle);
   create_new_node(this_obstacle, head_node, tail_node);
+  int n = 0;
   while(true) {
 	if (_kbhit()) {
 	  char x = getchar();
@@ -353,17 +354,20 @@ void game() {
 	  } else if (x == 'p'){
                 Pause();
 	  }
-
     }
+  }
     if (Timer(10000, 0)) {
 	  obstacle * this_obstacle = new obstacle;
 	  initial_obstacle(this_obstacle);
 	  draw_obstacle(this_obstacle);
 	  create_new_node(this_obstacle, head_node, tail_node);
     }
-    if (Timer(300, 1)) {
+    if (Timer(300 - 10 * n, 1)) {
 	  obstacle_move();
     }
+    if (Timer(20000, 2)) {
+    	n++;
+	}
   }
 }
 
