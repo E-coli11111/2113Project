@@ -299,7 +299,7 @@ void left() {
   draw_null_people();
   centre.X -= 1;
   draw_people(centre);
-  crash(head_node->this_obstacle);
+  crash();
 }
 
 // control the character to right side
@@ -307,7 +307,7 @@ void right() {
   draw_null_people();
   centre.X += 1;
   draw_people(centre);
-  crash(head_node->this_obstacle);
+  crash();
 }
 
 // play the game
