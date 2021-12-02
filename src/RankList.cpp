@@ -28,10 +28,6 @@ bool RankSortedList::insert(int score, string id){
         head = toAdd;
         if (size == 0)
             tail = toAdd;
-    }else if(size < MAXSIZE) {
-        toAdd->previous = tail;
-        tail->next = toAdd;
-        tail = toAdd;
     }else{
         while(current!=NULL) {
             current = current->next;
@@ -117,6 +113,7 @@ void RankSortedList::importList(){
         score =std::stoi(data.substr(pos + 1, data.length() - pos - 1));
         Node *ele = new Node{score,id};
         head = ele;
+        size++;
     }
     Node *current = head;
     while(std::getline(fin, data)){
@@ -127,6 +124,7 @@ void RankSortedList::importList(){
         current->next = ele;
         ele->previous = current;
         current = ele;
+        size++;
     }
     tail = current;
     fin.close();
