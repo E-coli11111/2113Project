@@ -355,13 +355,13 @@ void game() {
                 Pause();
             }
         }
-        if (Timer(1500, 0)) {
+        if (Timer(1500 - 150 * n, 0)) {
             obstacle * this_obstacle = new obstacle;
             initial_obstacle(this_obstacle);
             draw_obstacle(this_obstacle);
             create_new_node(this_obstacle, head_node, tail_node);
         }
-        if (Timer(300 / pow(2, n), 1)) {
+        if (Timer(300 / pow(1.5, n), 1)) {
             obstacle_move();
         }
         if (Timer(20000, 2)) {
