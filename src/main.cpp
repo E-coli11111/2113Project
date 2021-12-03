@@ -162,8 +162,8 @@ void create_new_node(obstacle * this_obstacle, node * &head_node, node * &tail_n
 
 // generate obstacle and initial it
 void initial_obstacle(obstacle * this_obstacle) {
-    int height = (rand() % (20 - 0)) + 0;
-    this_obstacle->centre = {75, 23 - height};
+    int height = (rand() % (19 - 0)) + 0;
+    this_obstacle->centre = {75, 21 - height};
     this_obstacle->graphs[0].X = this_obstacle->graphs[2].X = this_obstacle->centre.X - 1;
     this_obstacle->graphs[1].X = this_obstacle->graphs[3].X = this_obstacle->centre.X + 1;
     this_obstacle->graphs[4].X = this_obstacle->centre.X - 2;
