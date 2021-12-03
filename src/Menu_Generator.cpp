@@ -16,16 +16,16 @@ void game();
  */
 void rankMenu(){
     clear();
-    setPos(33,10);
+    setPos(35,8);
     setColor(33);
     cout<<"Top 5!!"<<endl;
     RankSortedList *listptr = new RankSortedList;
     listptr->importList();
-    listptr->displayRank(25,12);
-    setPos(34,17);
+    listptr->displayRank(28,10);
+    setPos(36,17);
     setColor(31);
     cout << "BACK";
-    setPos(33,17);
+    setPos(36,17);
     while(1) {
         int key = scanKeyboard();
         if (key == 10) { // When press "Enter", back to main menu.
@@ -71,11 +71,11 @@ bool pauseMenu(){
                 cout << "\033[K";
                 return false;
             }else if(lineNum == 1){
-                return true;
                 setPos(1,1);
                 cout << "\033[K";
                 setPos(1,2);
                 cout << "\033[K";
+                return true;
             }
             break;
         }
@@ -90,17 +90,17 @@ bool pauseMenu(){
  */
 void mainMenu(){ //May need to set the initial mouse to the right position.
     clear();
-    setPos(30,10);
+    setPos(33,8);
     setColor(33);
     cout<<"WELCOME!!"<<std::endl;
     setColor(35);
-    setPos(29,12);
+    setPos(32,10);
     cout<<"START";
-    setPos(29,13);
+    setPos(32,11);
     cout<<"HIGHEST SCORES";
-    setPos(29,14);
+    setPos(32,12);
     cout<<"EXIT";
-    setPos(28,12);
+    setPos(31,10);
     int lineNum = 0; //If lineNum = 0, start the game. If lineNum = 1, show the highest score
     while(1){
         int key = scanKeyboard();

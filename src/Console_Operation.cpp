@@ -107,4 +107,4 @@ int scanKeyboard(){
     system("stty echo");
     cout << "\033[u";
     return in;
-}//这个是抄的到时得改
+}
